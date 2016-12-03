@@ -22,4 +22,23 @@
         android:id="@+id/banner_pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/banner_enable_auto_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="启用自动播放"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/slow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="慢速播放"/>
+        <Button
+            android:id="@+id/fast"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="快速播放"/>
+    </LinearLayout>
 </LinearLayout>

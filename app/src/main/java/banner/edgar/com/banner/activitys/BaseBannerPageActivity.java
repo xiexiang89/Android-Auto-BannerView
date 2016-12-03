@@ -19,6 +19,8 @@ package banner.edgar.com.banner.activitys;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 
 import com.edgar.banner.BannerItem;
 import com.edgar.banner.BannerPagerView;
@@ -55,6 +57,34 @@ public abstract class BaseBannerPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.banner);
         mBannerPagerView = (BannerPagerView) findViewById(R.id.banner_pager);
+        mBannerPagerView.setIntervalTime(1200);
+        final Button button = (Button) findViewById(R.id.banner_enable_auto_play);
+        Button slowView = (Button) findViewById(R.id.slow);
+        slowView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mBannerPagerView.setIntervalTime(10*1000);
+            }
+        });
+        Button fastView = (Button) findViewById(R.id.fast);
+        fastView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mBannerPagerView.setIntervalTime(1200);
+            }
+        });
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mBannerPagerView.isEnableAutoPlay()){
+                    mBannerPagerView.setEnableAutoPlay(false);
+                    button.setText("启用自动播放");
+                } else {
+                    mBannerPagerView.setEnableAutoPlay(true);
+                    button.setText("禁用自动播放");
+                }
+            }
+        });
         mBannerPagerView.setBannerPagerView(getBannerPageView());
         mBannerPagerView.setImageLoader(getBannerImageLoader());
         mBannerPagerView.setOnBannerClickListener(new BannerPagerView.OnBannerClickListener() {
