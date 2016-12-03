@@ -63,7 +63,7 @@ public abstract class BaseBannerPageActivity extends AppCompatActivity {
         slowView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mBannerPagerView.setIntervalTime(10*1000);
+                mBannerPagerView.setIntervalTime(8*1000);
             }
         });
         Button fastView = (Button) findViewById(R.id.fast);

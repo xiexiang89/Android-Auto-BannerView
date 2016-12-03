@@ -59,12 +59,18 @@ public class FrescoBannerPageView implements IBannerPageView,ImageLoader{
         SimpleDraweeView simpleDraweeView = (SimpleDraweeView) view;
         GenericDraweeHierarchyBuilder builder =
                 new GenericDraweeHierarchyBuilder(context.getResources());
-        GenericDraweeHierarchy hierarchy = builder
-                .setFadeDuration(300)
-                .setPlaceholderImage(R.drawable.img_loading)
-                .setFailureImage(R.drawable.img_loading)
-                .build();
-        draweeController.setHierarchy(hierarchy);
+        GenericDraweeHierarchy draweeHierarchy = simpleDraweeView.getHierarchy();
+        if (draweeHierarchy != null){
+            draweeHierarchy.setPlaceholderImage(R.drawable.img_loading);
+            draweeHierarchy.setFailureImage(R.drawable.img_loading);
+        } else {
+            GenericDraweeHierarchy hierarchy = builder
+                    .setFadeDuration(1000)
+                    .setPlaceholderImage(R.drawable.img_loading)
+                    .setFailureImage(R.drawable.img_loading)
+                    .build();
+            draweeController.setHierarchy(hierarchy);
+        }
         simpleDraweeView.setController(draweeController);
     }
 }
