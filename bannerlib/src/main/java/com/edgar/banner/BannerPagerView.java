@@ -89,6 +89,7 @@ public class BannerPagerView extends FrameLayout {
     private HandlerThread mLooperThread;
     private Handler mLooperHandler;
     private IBannerPageView mBannerPageView;
+    private ImageLoader mImageLoader;
     private OnBannerClickListener mOnBannerClickListener;
     private final View.OnClickListener mBannerClickListener = new OnClickListener() {
         @Override
@@ -144,7 +145,12 @@ public class BannerPagerView extends FrameLayout {
     }
 
     public void setBannerPagerView(IBannerPageView bannerPagerView){
+        if (bannerPagerView == null) return;
         mBannerPageView = bannerPagerView;
+    }
+
+    public void setImageLoader(ImageLoader imageLoader) {
+        this.mImageLoader = imageLoader;
     }
 
     public void setOnBannerClickListener(OnBannerClickListener onBannerClickListener) {
@@ -405,6 +411,7 @@ public class BannerPagerView extends FrameLayout {
                     Log.e(TAG,"Banner view already exists parent",e);
                 }
                 mBannerPageView.finishInstantiateItem(bannerView,bannerItem,realPosition);
+                if (mImageLoader != null) mImageLoader.displayBannerImage(getContext(),bannerView,bannerItem);
             }
             return bannerView;
         }

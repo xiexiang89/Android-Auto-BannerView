@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2016 The Edgar
  *
@@ -21,8 +20,6 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
-import com.squareup.picasso.Picasso;
 
 /**
  * Created by Edgar on 2016/12/2.
@@ -48,9 +45,7 @@ class DefaultBannerPageView implements IBannerPageView {
     }
 
     @Override
-    public void finishInstantiateItem(View pageView, BannerItem bannerItem, int position) {
-        Picasso.with(pageView.getContext()).load(bannerItem.getBannerUrl()).into((ImageView) pageView);
-    }
+    public void finishInstantiateItem(View pageView, BannerItem bannerItem, int position) {}
 
     private ImageView createImageView(Context context,BannerItem bannerItem){
         final ImageView imageView = new ImageView(context);
@@ -60,5 +55,4 @@ class DefaultBannerPageView implements IBannerPageView {
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         return imageView;
     }
-
 }

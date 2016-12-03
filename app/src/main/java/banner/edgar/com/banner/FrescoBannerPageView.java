@@ -22,7 +22,10 @@ import android.view.ViewGroup;
 
 import com.edgar.banner.BannerItem;
 import com.edgar.banner.IBannerPageView;
+import com.edgar.banner.ImageLoader;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.generic.GenericDraweeHierarchy;
+import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -30,7 +33,7 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 /**
  * Created by Edgar on 2016/12/3.
  */
-public class FrescoBannerPageView implements IBannerPageView{
+public class FrescoBannerPageView implements IBannerPageView,ImageLoader{
     @Override
     public View createPageView(Context context, BannerItem bannerItem, int position) {
         SimpleDraweeView simpleDraweeView = new SimpleDraweeView(context);
@@ -47,10 +50,21 @@ public class FrescoBannerPageView implements IBannerPageView{
     public void destroyPageView(View pageView, int position) {}
 
     @Override
-    public void finishInstantiateItem(View pageView, BannerItem bannerItem, int position) {
-        DraweeController draweeController = Fresco.newDraweeControllerBuilder().setUri(bannerItem.getBannerUrl())
+    public void finishInstantiateItem(View pageView, BannerItem bannerItem, int position) {}
+
+    @Override
+    public void displayBannerImage(Context context, View view, BannerItem banner) {
+        DraweeController draweeController = Fresco.newDraweeControllerBuilder().setUri(banner.getBannerUrl())
                 .build();
-        SimpleDraweeView simpleDraweeView = (SimpleDraweeView) pageView;
+        SimpleDraweeView simpleDraweeView = (SimpleDraweeView) view;
+        GenericDraweeHierarchyBuilder builder =
+                new GenericDraweeHierarchyBuilder(context.getResources());
+        GenericDraweeHierarchy hierarchy = builder
+                .setFadeDuration(300)
+                .setPlaceholderImage(R.drawable.img_loading)
+                .setFailureImage(R.drawable.img_loading)
+                .build();
+        draweeController.setHierarchy(hierarchy);
         simpleDraweeView.setController(draweeController);
     }
 }

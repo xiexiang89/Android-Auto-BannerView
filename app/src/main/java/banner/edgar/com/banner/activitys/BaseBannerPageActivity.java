@@ -14,19 +14,27 @@
  * limitations under the License.
  */
 
-package banner.edgar.com.banner;
+package banner.edgar.com.banner.activitys;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 
 import com.edgar.banner.BannerItem;
 import com.edgar.banner.BannerPagerView;
-import com.facebook.drawee.backends.pipeline.Fresco;
+import com.edgar.banner.IBannerPageView;
+import com.edgar.banner.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+import banner.edgar.com.banner.R;
+import banner.edgar.com.banner.ToastUtils;
+
+/**
+ * Created by Edgar on 2016/12/3.
+ */
+public abstract class BaseBannerPageActivity extends AppCompatActivity {
 
     private static final List<BannerItem> BANNER_ITEMS = new ArrayList<>();
     static {
@@ -41,19 +49,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private BannerPagerView mBannerPagerView;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Fresco.initialize(getApplicationContext());
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.banner);
         mBannerPagerView = (BannerPagerView) findViewById(R.id.banner_pager);
-        mBannerPagerView.setBannerPagerView(new FrescoBannerPageView());
+        mBannerPagerView.setBannerPagerView(getBannerPageView());
+        mBannerPagerView.setImageLoader(getBannerImageLoader());
         mBannerPagerView.setOnBannerClickListener(new BannerPagerView.OnBannerClickListener() {
             @Override
             public void onBannerClick(BannerItem bannerItem) {
-                ToastUtils.showToast(MainActivity.this,bannerItem.getBannerTitle());
+                ToastUtils.showToast(BaseBannerPageActivity.this, bannerItem.getBannerTitle());
             }
         });
         mBannerPagerView.setBanner(BANNER_ITEMS);
     }
+
+    protected abstract ImageLoader getBannerImageLoader();
+
+    protected abstract IBannerPageView getBannerPageView();
 }
