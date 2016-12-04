@@ -29,3 +29,28 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.2.1'
     testCompile 'junit:junit:4.12'
 }
+
+//ext{
+//    bintrayRepo='maven'
+//    bintrayName='com.edgar.banner'
+//
+//    publishedGroupId='com.edgar.android.banner'
+//    libraryName='bannerlib'
+//    artifact='bannerlib'
+//
+//    libraryDescription='Android Banner'
+//
+//    siteUrl='https://git.oschina.net/DeWork.com/Banner'
+//    gitUrl='git@git.oschina.net:DeWork.com/Banner.git'
+//
+//    libraryVersion='1.0.0'
+//
+//    developerId='edgar'
+//    developerName='edgar'
+//    developerEmail='xiexiang89@126.com'
+//
+//    licenseName='TheApacheSoftwareLicense,Version2.0'
+//    licenseUrl='http://www.apache.org/licenses/LICENSE-2.0.txt'
+//    allLicenses=["Apache-2.0"]
+//}
+apply from: '../bintray.gradle'

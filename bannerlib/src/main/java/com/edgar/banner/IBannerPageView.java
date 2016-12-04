@@ -28,18 +28,32 @@ public interface IBannerPageView {
      * 创建Banner page view
      * 该方法只会在第一次创建page的时候才会调用,后面将不会再调用.
      * @see IBannerPageView#finishInstantiateItem(View, BannerItem, int)
+     * @param context 上下文
+     * @param bannerItem banner对象
+     * @param position banner位置
      */
     View createPageView(Context context,BannerItem bannerItem, int position);
 
     /**
      * 创建Banner标题View
+     * @param context 上下文
+     * @param bannerItem banner对象
+     * @param position banner位置
      */
     View createTitleView(Context context,BannerItem bannerItem,int position);
 
+    /**
+     * 销毁View时会调用
+     * @param pageView banner page view
+     * @param position banner 位置
+     */
     void destroyPageView(View pageView,int position);
 
     /**
      * 该方法,每次都会调用,pageView可能是缓存view.
+     * @param pageView banner page view
+     * @param bannerItem banner对象
+     * @param position banner位置
      */
     void finishInstantiateItem(View pageView,BannerItem bannerItem,int position);
 }

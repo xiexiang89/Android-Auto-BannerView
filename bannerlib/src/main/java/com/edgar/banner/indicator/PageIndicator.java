@@ -26,16 +26,14 @@ import com.edgar.banner.LoopViewPager;
 public interface PageIndicator extends LoopViewPager.OnPageChangeListener {
     /**
      * Bind the indicator to a ViewPager.
-     *
-     * @param view
+     * @param view Should ViewPager
      */
     void setViewPager(LoopViewPager view);
 
     /**
      * Bind the indicator to a ViewPager.
-     *
-     * @param view
-     * @param initialPosition
+     * @param view Should viewpager
+     * @param initialPosition Initial position
      */
     void setViewPager(LoopViewPager view, int initialPosition);
 
@@ -44,8 +42,7 @@ public interface PageIndicator extends LoopViewPager.OnPageChangeListener {
      *
      * <p>This <strong>must</strong> be used if you need to set the page before
      * the views are drawn on screen (e.g., default start page).</p>
-     *
-     * @param item
+     * @param item Item index to select
      */
     void setCurrentItem(int item);
 
@@ -59,11 +56,14 @@ public interface PageIndicator extends LoopViewPager.OnPageChangeListener {
 
     /**
      * Set a page change listener which will receive forwarded events.
-     *
-     * @param listener
+     * @param listener Listener to set
      */
     void setOnPageChangeListener(LoopViewPager.OnPageChangeListener listener);
 
+    /**
+     * Set page count
+     * @param pageCount Page count
+     */
     void setPageCount(int pageCount);
 
     /**
