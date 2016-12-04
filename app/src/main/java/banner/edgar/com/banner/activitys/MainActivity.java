@@ -61,15 +61,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-//        mBannerPagerView = (BannerPagerView) findViewById(R.id.banner_pager);
-//        mBannerPagerView.setBannerPagerView(new FrescoBannerPageView());
-//        mBannerPagerView.setOnBannerClickListener(new BannerPagerView.OnBannerClickListener() {
-//            @Override
-//            public void onBannerClick(BannerItem bannerItem) {
-//                ToastUtils.showToast(MainActivity.this,bannerItem.getBannerTitle());
-//            }
-//        });
-//        mBannerPagerView.setBanner(BANNER_ITEMS);
     }
 
     private static String generateActivityClassName(String prefixName){
