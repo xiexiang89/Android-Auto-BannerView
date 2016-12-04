@@ -112,6 +112,12 @@ public class BannerPagerView extends FrameLayout {
                 mLooperHandler.postDelayed(mBannerLooperRunnable,mIntervalTime);
             }
         }
+
+        private void updateViewPage(){
+            int currentItem = mViewPage.getCurrentItem();
+            int newItem = currentItem+1;
+            mViewPage.setCurrentItem(newItem,true);
+        }
     };
     private final Runnable mBannerLooperRunnable = new Runnable() {
         @Override
@@ -303,12 +309,6 @@ public class BannerPagerView extends FrameLayout {
         }
         mLooperHandler.postDelayed(mBannerLooperRunnable,mIntervalTime);
         setBannerFlags(STATE_RUNNING,STATE_MARK);
-    }
-
-    private void updateViewPage(){
-        int currentItem = mViewPage.getCurrentItem();
-        int newItem = currentItem+1;
-        mViewPage.setCurrentItem(newItem,true);
     }
 
     @Override
