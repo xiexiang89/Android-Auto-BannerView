@@ -57,7 +57,6 @@ public abstract class BaseBannerPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.banner);
         mBannerPagerView = (BannerPagerView) findViewById(R.id.banner_pager);
-        mBannerPagerView.setIntervalTime(1200);
         final Button button = (Button) findViewById(R.id.banner_enable_auto_play);
         Button slowView = (Button) findViewById(R.id.slow);
         slowView.setOnClickListener(new View.OnClickListener() {
