@@ -24,21 +24,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.edgar.banner.BannerItem;
-import com.edgar.banner.BannerPagerView;
-import com.facebook.drawee.backends.pipeline.Fresco;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import banner.edgar.com.banner.FrescoBannerPageView;
 import banner.edgar.com.banner.R;
-import banner.edgar.com.banner.ToastUtils;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String ACTIVITYS_NAME = "banner.edgar.com.banner.activitys.%sActivity";
-    private BannerPagerView mBannerPagerView;
     private ListView mSampleListView;
     private ArrayAdapter<String> mSampleListAdapter;
     @Override
