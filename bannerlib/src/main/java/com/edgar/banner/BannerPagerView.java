@@ -54,7 +54,7 @@ public class BannerPagerView extends FrameLayout {
 
     private static final String TAG = BannerPagerView.class.getSimpleName();
     private static final int INIT_POSITION = 0;
-    private static final long DELAY_TIME = 10*1000;
+    private static final long DEFAULT_DELAY_TIME = 10*10_00;
     //Banner auto loop play state
     private static final int STATE_STOP = 0x00000000;
     private static final int STATE_RUNNING = 0x00000001;
@@ -84,7 +84,7 @@ public class BannerPagerView extends FrameLayout {
     private LoopViewPager mViewPage;
     private BannerPageAdapter mPageAdapter;
 
-    private long mIntervalTime = DELAY_TIME;
+    private long mIntervalTime = DEFAULT_DELAY_TIME;
     //Banner flags
     private int mBannerFlags;
     private final BannerPageListener mCarousePageListener = new BannerPageListener();
