@@ -87,7 +87,6 @@ public class BannerPagerView extends FrameLayout {
     private long mIntervalTime = DELAY_TIME;
     //Banner flags
     private int mBannerFlags;
-    private boolean mEnableAutoPlay;
     private final BannerPageListener mCarousePageListener = new BannerPageListener();
     private HandlerThread mLooperThread;
     private Handler mLooperHandler;
