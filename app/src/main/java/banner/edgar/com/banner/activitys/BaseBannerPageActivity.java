@@ -19,6 +19,7 @@ package banner.edgar.com.banner.activitys;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 
@@ -92,6 +93,10 @@ public abstract class BaseBannerPageActivity extends AppCompatActivity {
                 ToastUtils.showToast(BaseBannerPageActivity.this, bannerItem.getBannerTitle());
             }
         });
+        // 取屏幕尺寸的1/3
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        int bannerHeight = displayMetrics.heightPixels / 4;
+        mBannerPagerView.getLayoutParams().height = bannerHeight;
         mBannerPagerView.setBanner(BANNER_ITEMS);
     }
 

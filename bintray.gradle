@@ -16,11 +16,11 @@
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
-version = "1.0.0"
+version = VERSION
 
 def siteUrl = 'https://git.oschina.net/DeWork.com/Banner'
 def gitUrl = 'git@git.oschina.net:DeWork.com/Banner.git'
-group = "com.edgar.banner" // Maven Group ID for the artifact
+group = "com.edgar.android" // Maven Group ID for the artifact
 install {
     repositories.mavenInstaller {
 
@@ -62,19 +62,25 @@ task sourcesJar(type: Jar) {
     classifier = 'sources'
 }
 
-//task javadoc(type: Javadoc) {
-//    source = android.sourceSets.main.java.srcDirs
-//    options.encoding = "UTF-8"
-//    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-//}
-//
-//task javadocJar(type: Jar, dependsOn: javadoc) {
-//    classifier = 'javadoc'
-//    from javadoc.destinationDir
-//}
+task androidJavadocs(type: Javadoc) {
+    failOnError = false
+    source = android.sourceSets.main.java.srcDirs
+    ext.androidJar = "${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar"
+    classpath += files(ext.androidJar)
+}
+
+task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
+    classifier = 'javadoc'
+    from androidJavadocs.destinationDir
+}
+
+task androidSourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.srcDirs
+}
 
 artifacts {
-//    archives javadocJar
+    archives androidJavadocsJar
     archives sourcesJar
 }
 
@@ -87,7 +93,7 @@ bintray {
     configurations = ['archives']
     pkg {
         repo = "maven"
-        name = "banner" //发布到JCenter上的项目名字
+        name = NAME //发布到JCenter上的项目名字
         websiteUrl = siteUrl
         vcsUrl = gitUrl
         licenses = ["Apache-2.0"]

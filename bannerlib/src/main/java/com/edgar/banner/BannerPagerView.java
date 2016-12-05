@@ -27,7 +27,6 @@ import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -145,14 +144,15 @@ public class BannerPagerView extends FrameLayout {
         mViewPage.setScroller(new BannerScroller(getContext()));
         mViewPage.setOverScrollMode(View.OVER_SCROLL_NEVER);
         mBottomIndicator.setOnPageChangeListener(mCarousePageListener);
-
-        // 取屏幕尺寸的1/3
-        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        int bannerHeight = displayMetrics.heightPixels / 3;
-        FrameLayout.LayoutParams bannerLayoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,bannerHeight);
-        mViewPage.setLayoutParams(bannerLayoutParams);
         mBannerPageView = new DefaultBannerPageView();
         setEnableAutoPlay(false);
+    }
+
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        mViewPage.getLayoutParams().height = getLayoutParams().height;
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
     public void setBannerPagerView(IBannerPageView bannerPagerView){

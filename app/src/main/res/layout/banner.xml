@@ -21,7 +21,7 @@
     <com.edgar.banner.BannerPagerView
         android:id="@+id/banner_pager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="150dp"/>
     <Button
         android:id="@+id/banner_enable_auto_play"
         android:layout_width="wrap_content"
