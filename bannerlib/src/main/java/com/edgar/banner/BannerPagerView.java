@@ -35,6 +35,7 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.SparseArray;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -99,8 +100,10 @@ public class BannerPagerView extends FrameLayout {
     private HandlerThread mLooperThread;
     private Handler mLooperHandler;
 
+    private int mIndicatorGravity;
     private BannerPageViewAdapter mBannerPageAdapter;
     private ImageLoader mImageLoader;
+    private BannerTitleView mBannerTitleView;
     private ViewPager.OnPageChangeListener mOnPageChangeListener;
 
     private OnBannerClickListener mOnBannerClickListener;
@@ -180,6 +183,7 @@ public class BannerPagerView extends FrameLayout {
         int indicatorNormalColor = a.getColor(R.styleable.BannerPagerView_bannerIndicatorNormalColor,defaultPageColor);
         int strokeColor = a.getColor(R.styleable.BannerPagerView_bannerIndicatorStrokeColor,defaultStrokeColor);
         float strokeWidth = a.getDimension(R.styleable.BannerPagerView_bannerIndicatorStrokeWidth,defaultStrokeWidth);
+        mIndicatorGravity = a.getInt(R.styleable.BannerPagerView_bannerIndicatorGravity, Gravity.CENTER);
         Drawable bannerBottomBackground = a.getDrawable(R.styleable.BannerPagerView_bannerBottomBackground);
         if (bannerBottomBackground == null){
             bannerBottomBackground = new ColorDrawable(DEFAULT_BOTTOM_BACKGROUND);
@@ -205,11 +209,30 @@ public class BannerPagerView extends FrameLayout {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         mViewPage.getLayoutParams().height = getLayoutParams().height;
+        if (mIndicatorGravity == Gravity.CENTER){
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mBottomIndicator.getLayoutParams();
+            params.bottomMargin = params.topMargin = getResources().getDimensionPixelOffset(R.dimen.padding);
+        }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
     public void setOnPageChangeListener(ViewPager.OnPageChangeListener listener){
         mOnPageChangeListener = listener;
+    }
+
+    public void setBannerTitleView(BannerTitleView bannerTitleView){
+        mBannerTitleView = bannerTitleView;
+        int layoutId = mBannerTitleView.getTitleLayoutId();
+        View titleView = LayoutInflater.from(getContext()).inflate(layoutId,mBottomLayout,false);
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) titleView.getLayoutParams();
+        params.weight = 1;
+        params.gravity = Gravity.CENTER_VERTICAL;
+        bannerTitleView.onFinishInflater(titleView);
+        if (mIndicatorGravity == Gravity.LEFT){
+            mBottomLayout.addView(titleView);
+        } else if (mIndicatorGravity == Gravity.RIGHT){
+            mBottomLayout.addView(titleView,0);
+        }
     }
 
     public void setBannerPagerAdapter(BannerPageViewAdapter bannerPageAdapter){
@@ -260,7 +283,14 @@ public class BannerPagerView extends FrameLayout {
             //底部指示条需要以真实数据size为准
             mBottomIndicator.setPageCount(originCount);
             mBottomIndicator.setCurrentItem(INIT_POSITION);
+            setBannerTitle(INIT_POSITION);
             startAutoPlay();
+        }
+    }
+
+    private void setBannerTitle(int position){
+        if (mBannerTitleView != null){
+            mBannerTitleView.setTitle(mBannerList.get(position).getBannerTitle(),position);
         }
     }
 
@@ -425,6 +455,7 @@ public class BannerPagerView extends FrameLayout {
             if (mOnPageChangeListener != null){
                 mOnPageChangeListener.onPageSelected(position);
             }
+            setBannerTitle(position);
         }
 
         @Override

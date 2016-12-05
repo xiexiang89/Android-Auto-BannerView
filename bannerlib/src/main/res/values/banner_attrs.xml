@@ -25,5 +25,9 @@
         <attr name="bannerIndicatorStrokeColor" format="dimension|color"/>
         <attr name="enableAutoPlayer" format="boolean|reference"/>
         <attr name="bannerBottomBackground" format="reference|color"/>
+        <attr name="bannerIndicatorGravity" format="enum">
+            <enum name="left" value="3"/>
+            <enum name="right" value="5"/>
+        </attr>
     </declare-styleable>
 </resources>

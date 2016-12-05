@@ -31,6 +31,7 @@ import com.edgar.banner.ImageLoader;
 import java.util.ArrayList;
 import java.util.List;
 
+import banner.edgar.com.banner.CustomBannerTitleView;
 import banner.edgar.com.banner.R;
 import banner.edgar.com.banner.ToastUtils;
 
@@ -41,12 +42,12 @@ public abstract class BaseBannerPageActivity extends AppCompatActivity {
 
     private static final List<BannerItem> BANNER_ITEMS = new ArrayList<>();
     static {
-        addBannerItems(new BannerItem().title("Banner1").url("http://f.hiphotos.baidu.com/image/h%3D360/sign=e105b9f1d61b0ef473e89e58edc651a1/b151f8198618367a9f738e022a738bd4b21ce573.jpg"));
-        addBannerItems(new BannerItem().title("Banner2").url("http://img0.imgtn.bdimg.com/it/u=2425082484,2187620716&fm=11&gp=0.jpg"));
-        addBannerItems(new BannerItem().title("Banner3").url("http://img3.imgtn.bdimg.com/it/u=678632234,3415842991&fm=11&gp=0.jpg"));
-        addBannerItems(new BannerItem().title("Banner4").url("http://img1.imgtn.bdimg.com/it/u=2007297771,1800118672&fm=11&gp=0.jpg"));
-        addBannerItems(new BannerItem().title("Banner5").url("http://desk.fd.zol-img.com.cn/t_s960x600c5/g5/M00/02/03/ChMkJlbKxo2Icle3ABK7R4H2DZMAALHnABaAUIAErtf905.jpg"));
-        addBannerItems(new BannerItem().title("Banner6").url("http://pic15.nipic.com/20110620/6465749_141657320145_2.jpg"));
+        addBannerItems(new BannerItem().title("001A航母卫星照曝光！与辽宁舰一个模子舰岛略小").url("http://n.sinaimg.cn/mil/20161205/V6Di-fxyiayr9101767.jpg"));
+        addBannerItems(new BannerItem().title("我们的航母编队！辽宁号航母战斗群靓照大曝光").url("http://n.sinaimg.cn/mil/transform/20161205/7HQf-fxyipxf7604307.jpg"));
+        addBannerItems(new BannerItem().title("中国空军司令确认研制轰20 制造完毕明年将首飞").url("http://n.sinaimg.cn/mil/20161205/O97X-fxyiayr9093409.jpg"));
+        addBannerItems(new BannerItem().title("90后特警美女教官走红：教男队员打枪格斗").url("http://n.sinaimg.cn/mil/20161205/csIL-fxyiayr9137844.jpg"));
+        addBannerItems(new BannerItem().title("空中弹药库！F-15与中国版苏30实战挂载对比").url("http://n.sinaimg.cn/mil/20161205/hMHP-fxyipxf7621257.jpg"));
+        addBannerItems(new BannerItem().title("我又不是人民币，没必要所有人都喜欢").url("http://imgsize.ph.126.net/?imgurl=http://cms-bucket.nosdn.127.net/f4cf66965c514dcca50ca69ab4ad4f1220161202120101.png_600x250x1x85.jpg"));
     }
 
     private static void addBannerItems(BannerItem bannerItem){
@@ -99,6 +100,7 @@ public abstract class BaseBannerPageActivity extends AppCompatActivity {
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         int bannerHeight = displayMetrics.heightPixels / 4;
         mBannerPagerView.getLayoutParams().height = bannerHeight;
+        mBannerPagerView.setBannerTitleView(new CustomBannerTitleView());
         mBannerPagerView.setBanner(BANNER_ITEMS);
     }
 

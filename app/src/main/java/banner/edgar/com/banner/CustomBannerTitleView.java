@@ -14,20 +14,32 @@
  * limitations under the License.
  */
 
-package com.edgar.banner;
+package banner.edgar.com.banner;
 
-import android.support.annotation.LayoutRes;
 import android.view.View;
+import android.widget.TextView;
+
+import com.edgar.banner.BannerTitleView;
 
 /**
  * Created by Edgar on 2016/12/5.
  */
-public interface BannerTitleView {
 
-    void setTitle(CharSequence title,int position);
+public class CustomBannerTitleView implements BannerTitleView {
 
-    void onFinishInflater(View titleView);
+    private TextView mTitleTextView;
+    @Override
+    public void setTitle(CharSequence title, int position) {
+        mTitleTextView.setText(title);
+    }
 
-    @LayoutRes
-    int getTitleLayoutId();
+    @Override
+    public void onFinishInflater(View titleView) {
+        mTitleTextView = (TextView) titleView.findViewById(R.id.title);
+    }
+
+    @Override
+    public int getTitleLayoutId() {
+        return R.layout.banner_title;
+    }
 }

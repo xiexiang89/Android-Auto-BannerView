@@ -11,23 +11,14 @@
         android:id="@+id/bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="2dp"
+        android:gravity="center"
         android:layout_gravity="bottom">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@color/default_circle_indicator_fill_color"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"/>
         <com.edgar.banner.indicator.CirclePageIndicator
             android:id="@+id/indicator_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/padding"
-            android:paddingTop="@dimen/padding"
             android:paddingLeft="@dimen/padding"
-            android:layout_marginLeft="@dimen/indicator_margin_left"
             android:layout_marginRight="@dimen/indicator_margin_right"
-            android:layout_gravity="left|center_vertical"/>
+            android:layout_gravity="center"/>
     </LinearLayout>
 </merge>
