@@ -16,12 +16,20 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
     <com.edgar.banner.BannerPagerView
         android:id="@+id/banner_pager"
         android:layout_width="match_parent"
-        android:layout_height="150dp"/>
+        android:layout_height="150dp"
+        app:bannerIndicatorNormalColor="@android:color/white"
+        app:bannerIndicatorSelectorColor="#04c05a"
+        app:bannerIndicatorNormalRadius="1.5dp"
+        app:bannerIndicatorSelectorRadius="2dp"
+        app:bannerIndicatorStrokeColor="@android:color/transparent"
+        app:enableAutoPlayer="true"/>
     <Button
         android:id="@+id/banner_enable_auto_play"
         android:layout_width="wrap_content"

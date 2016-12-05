@@ -21,7 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.edgar.banner.BannerItem;
-import com.edgar.banner.IBannerPageView;
+import com.edgar.banner.BannerPageViewAdapter;
 import com.edgar.banner.ImageLoader;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.generic.GenericDraweeHierarchy;
@@ -33,17 +33,12 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 /**
  * Created by Edgar on 2016/12/3.
  */
-public class FrescoBannerPageView implements IBannerPageView,ImageLoader{
+public class FrescoBannerPageView implements BannerPageViewAdapter,ImageLoader{
     @Override
     public View createPageView(Context context, BannerItem bannerItem, int position) {
         SimpleDraweeView simpleDraweeView = new SimpleDraweeView(context);
         simpleDraweeView.setLayoutParams(new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
         return simpleDraweeView;
-    }
-
-    @Override
-    public View createTitleView(Context context, BannerItem bannerItem, int position) {
-        return null;
     }
 
     @Override

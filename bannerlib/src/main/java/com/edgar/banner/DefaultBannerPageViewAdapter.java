@@ -25,16 +25,11 @@ import android.widget.ImageView;
  * Created by Edgar on 2016/12/2.
  * 默认的Banner page view
  */
-class DefaultBannerPageView implements IBannerPageView {
+class DefaultBannerPageViewAdapter implements BannerPageViewAdapter {
 
     @Override
     public View createPageView(Context context,BannerItem bannerItem, int position) {
         return createImageView(context,bannerItem);
-    }
-
-    @Override
-    public View createTitleView(Context context,BannerItem bannerItem, int position) {
-        return null;
     }
 
     @Override

@@ -19,7 +19,7 @@ package banner.edgar.com.banner.activitys;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.edgar.banner.IBannerPageView;
+import com.edgar.banner.BannerPageViewAdapter;
 import com.edgar.banner.ImageLoader;
 import com.facebook.drawee.backends.pipeline.Fresco;
 
@@ -44,7 +44,7 @@ public class FrescoBannerActivity extends BaseBannerPageActivity{
     }
 
     @Override
-    protected IBannerPageView getBannerPageView() {
+    protected BannerPageViewAdapter getBannerPageViewAdapter() {
         return frescoBannerPageView;
     }
 }

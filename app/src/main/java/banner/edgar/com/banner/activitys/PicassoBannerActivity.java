@@ -18,9 +18,8 @@ package banner.edgar.com.banner.activitys;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 
-import com.edgar.banner.IBannerPageView;
+import com.edgar.banner.BannerPageViewAdapter;
 import com.edgar.banner.ImageLoader;
 
 import banner.edgar.com.banner.PicassoImageLoader;
@@ -43,7 +42,7 @@ public class PicassoBannerActivity extends BaseBannerPageActivity{
     }
 
     @Override
-    protected IBannerPageView getBannerPageView() {
+    protected BannerPageViewAdapter getBannerPageViewAdapter() {
         return null;
     }
 }

@@ -24,8 +24,8 @@ import android.view.View;
 import android.widget.Button;
 
 import com.edgar.banner.BannerItem;
+import com.edgar.banner.BannerPageViewAdapter;
 import com.edgar.banner.BannerPagerView;
-import com.edgar.banner.IBannerPageView;
 import com.edgar.banner.ImageLoader;
 
 import java.util.ArrayList;
@@ -85,7 +85,7 @@ public abstract class BaseBannerPageActivity extends AppCompatActivity {
                 }
             }
         });
-        mBannerPagerView.setBannerPagerView(getBannerPageView());
+        mBannerPagerView.setBannerPagerAdapter(getBannerPageViewAdapter());
         mBannerPagerView.setImageLoader(getBannerImageLoader());
         mBannerPagerView.setOnBannerClickListener(new BannerPagerView.OnBannerClickListener() {
             @Override
@@ -102,5 +102,5 @@ public abstract class BaseBannerPageActivity extends AppCompatActivity {
 
     protected abstract ImageLoader getBannerImageLoader();
 
-    protected abstract IBannerPageView getBannerPageView();
+    protected abstract BannerPageViewAdapter getBannerPageViewAdapter();
 }

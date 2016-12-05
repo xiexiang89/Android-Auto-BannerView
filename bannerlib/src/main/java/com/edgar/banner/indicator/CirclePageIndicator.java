@@ -47,7 +47,8 @@ import static android.widget.LinearLayout.VERTICAL;
 public class CirclePageIndicator extends View implements PageIndicator {
     private static final int INVALID_POINTER = -1;
 
-    private float mRadius;
+    private float mSelectedRadius;
+    private float mNormalRadius;
     private final Paint mPaintPageFill = new Paint(ANTI_ALIAS_FLAG);
     private final Paint mPaintStroke = new Paint(ANTI_ALIAS_FLAG);
     private final Paint mPaintFill = new Paint(ANTI_ALIAS_FLAG);
@@ -86,7 +87,8 @@ public class CirclePageIndicator extends View implements PageIndicator {
         final int defaultOrientation = res.getInteger(R.integer.default_circle_indicator_orientation);
         final int defaultStrokeColor = res.getColor(R.color.default_circle_indicator_stroke_color);
         final float defaultStrokeWidth = res.getDimension(R.dimen.default_circle_indicator_stroke_width);
-        final float defaultRadius = res.getDimension(R.dimen.default_circle_indicator_radius);
+        final float defaultSelectRadius = res.getDimension(R.dimen.default_circle_selector_radius);
+        final float defaultNormalRadius = res.getDimension(R.dimen.default_circle_normal_radius);
         final boolean defaultCentered = res.getBoolean(R.bool.default_circle_indicator_centered);
         final boolean defaultSnap = res.getBoolean(R.bool.default_circle_indicator_snap);
 
@@ -102,7 +104,8 @@ public class CirclePageIndicator extends View implements PageIndicator {
         mPaintStroke.setStrokeWidth(a.getDimension(R.styleable.CirclePageIndicator_strokeWidth, defaultStrokeWidth));
         mPaintFill.setStyle(Style.FILL);
         mPaintFill.setColor(a.getColor(R.styleable.CirclePageIndicator_fillColor, defaultFillColor));
-        mRadius = a.getDimension(R.styleable.CirclePageIndicator_indicatorRadius, defaultRadius);
+        mSelectedRadius = a.getDimension(R.styleable.CirclePageIndicator_indicatorSelectorRadius, defaultSelectRadius);
+        mNormalRadius = a.getDimension(R.styleable.CirclePageIndicator_indicatorNormalRadius,defaultNormalRadius);
         mSnap = a.getBoolean(R.styleable.CirclePageIndicator_snap, defaultSnap);
 
         Drawable background = a.getDrawable(R.styleable.CirclePageIndicator_android_background);
@@ -179,13 +182,22 @@ public class CirclePageIndicator extends View implements PageIndicator {
         return mPaintStroke.getStrokeWidth();
     }
 
-    public void setRadius(float radius) {
-        mRadius = radius;
+    public void setSelectedRadius(float radius) {
+        mSelectedRadius = radius;
         invalidate();
     }
 
-    public float getRadius() {
-        return mRadius;
+    public float getSelectedRadius() {
+        return mSelectedRadius;
+    }
+
+    public void setNormalRadius(float normalRadius) {
+        this.mNormalRadius = normalRadius;
+        invalidate();
+    }
+
+    public float getNormalRadius() {
+        return mNormalRadius;
     }
 
     public void setSnap(boolean snap) {
@@ -230,9 +242,9 @@ public class CirclePageIndicator extends View implements PageIndicator {
             shortPaddingBefore = getPaddingLeft();
         }
 
-        final float threeRadius = mRadius * 3;
-        final float shortOffset = shortPaddingBefore + mRadius;
-        float longOffset = longPaddingBefore + mRadius;
+        final float threeRadius = mSelectedRadius * 3;
+        final float shortOffset = shortPaddingBefore + mSelectedRadius;
+        float longOffset = longPaddingBefore + mSelectedRadius;
         if (mCentered) {
             longOffset += ((longSize - longPaddingBefore - longPaddingAfter) / 2.0f) - ((count * threeRadius) / 2.0f);
         }
@@ -240,7 +252,7 @@ public class CirclePageIndicator extends View implements PageIndicator {
         float dX;
         float dY;
 
-        float pageFillRadius = mRadius;
+        float pageFillRadius = mNormalRadius;
         if (mPaintStroke.getStrokeWidth() > 0) {
             pageFillRadius -= mPaintStroke.getStrokeWidth() / 2.0f;
         }
@@ -261,8 +273,8 @@ public class CirclePageIndicator extends View implements PageIndicator {
             }
 
             // Only paint stroke if a stroke width was non-zero
-            if (pageFillRadius != mRadius) {
-                canvas.drawCircle(dX, dY, mRadius, mPaintStroke);
+            if (pageFillRadius != mNormalRadius) {
+                canvas.drawCircle(dX, dY, mNormalRadius, mPaintStroke);
             }
         }
 
@@ -278,7 +290,7 @@ public class CirclePageIndicator extends View implements PageIndicator {
             dX = shortOffset;
             dY = longOffset + cx;
         }
-        canvas.drawCircle(dX, dY, mRadius, mPaintFill);
+        canvas.drawCircle(dX, dY, mSelectedRadius, mPaintFill);
     }
 
     public boolean onTouchEvent(MotionEvent ev) {
@@ -485,7 +497,7 @@ public class CirclePageIndicator extends View implements PageIndicator {
             //Calculate the width according the views count
             final int count = mViewPager.getAdapter().getCount();
             result = (int)(getPaddingLeft() + getPaddingRight()
-                    + (count * 2 * mRadius) + (count - 1) * mRadius + 1);
+                    + (count * 2 * mSelectedRadius) + (count - 1) * mSelectedRadius + 1);
             //Respect AT_MOST value if that was what is called for by measureSpec
             if (specMode == MeasureSpec.AT_MOST) {
                 result = Math.min(result, specSize);
@@ -511,7 +523,7 @@ public class CirclePageIndicator extends View implements PageIndicator {
             result = specSize;
         } else {
             //Measure the height
-            result = (int)(2 * mRadius + getPaddingTop() + getPaddingBottom() + 1);
+            result = (int)(2 * mSelectedRadius + getPaddingTop() + getPaddingBottom() + 1);
             //Respect AT_MOST value if that was what is called for by measureSpec
             if (specMode == MeasureSpec.AT_MOST) {
                 result = Math.min(result, specSize);

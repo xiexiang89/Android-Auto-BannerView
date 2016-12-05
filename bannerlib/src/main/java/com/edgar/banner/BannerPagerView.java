@@ -21,6 +21,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.support.v4.view.MotionEventCompat;
@@ -36,6 +38,7 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.FrameLayout;
 
+import com.edgar.banner.indicator.CirclePageIndicator;
 import com.edgar.banner.indicator.PageIndicator;
 
 import java.util.ArrayList;
@@ -79,7 +82,7 @@ public class BannerPagerView extends FrameLayout {
      * Banner list
      */
     private final List<BannerItem> mBannerList = new ArrayList<>();
-    private PageIndicator mBottomIndicator;
+    private CirclePageIndicator mBottomIndicator;
     private LoopViewPager mViewPage;
     private BannerPageAdapter mPageAdapter;
 
@@ -90,8 +93,9 @@ public class BannerPagerView extends FrameLayout {
     private HandlerThread mLooperThread;
     private Handler mLooperHandler;
 
-    private IBannerPageView mBannerPageView;
+    private BannerPageViewAdapter mBannerPageAdapter;
     private ImageLoader mImageLoader;
+    private ViewPager.OnPageChangeListener mOnPageChangeListener;
 
     private OnBannerClickListener mOnBannerClickListener;
     private final View.OnClickListener mBannerClickListener = new OnClickListener() {
@@ -129,25 +133,58 @@ public class BannerPagerView extends FrameLayout {
 
     public BannerPagerView(Context context) {
         super(context);
-        init();
+        init(null,0);
     }
 
     public BannerPagerView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(attrs,0);
     }
 
-    private void init(){
+    public BannerPagerView(Context context, AttributeSet attrs, int defStyle){
+        super(context,attrs,defStyle);
+        init(attrs,defStyle);
+    }
+
+    private void init(AttributeSet attrs,int defStyle){
+        Context context = getContext();
+        Resources resources = getResources();
         LayoutInflater.from(getContext()).inflate(R.layout.banner_layout,this,true);
-        mBottomIndicator = (PageIndicator) findViewById(R.id.indicator_view);
+        mBottomIndicator = (CirclePageIndicator) findViewById(R.id.indicator_view);
         mViewPage = (LoopViewPager) findViewById(R.id.carouse_viewpager);
         mViewPage.setScroller(new BannerScroller(getContext()));
         mViewPage.setOverScrollMode(View.OVER_SCROLL_NEVER);
         mBottomIndicator.setOnPageChangeListener(mCarousePageListener);
-        mBannerPageView = new DefaultBannerPageView();
-        setEnableAutoPlay(false);
-    }
+        mBannerPageAdapter = new DefaultBannerPageViewAdapter();
 
+        final float defaultSelectRadius = resources.getDimension(R.dimen.default_circle_selector_radius);
+        final float defaultNormalRadius = resources.getDimension(R.dimen.default_circle_normal_radius);
+        final int defaultPageColor = resources.getColor(R.color.default_circle_indicator_page_color);
+        final int defaultFillColor = resources.getColor(R.color.default_circle_indicator_fill_color);
+        final int defaultStrokeColor = resources.getColor(R.color.default_circle_indicator_stroke_color);
+        final float defaultStrokeWidth = resources.getDimension(R.dimen.default_circle_indicator_stroke_width);
+
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BannerPagerView, defStyle, 0);
+        float indicatorSelectorRadius = a.getDimension(R.styleable.BannerPagerView_bannerIndicatorSelectorRadius,
+                defaultSelectRadius);
+        float indicatorNormalRadius = a.getDimension(R.styleable.BannerPagerView_bannerIndicatorNormalRadius,
+                defaultNormalRadius);
+        int indicatorSelectorColor = a.getColor(R.styleable.BannerPagerView_bannerIndicatorSelectorColor,defaultFillColor);
+        int indicatorNormalColor = a.getColor(R.styleable.BannerPagerView_bannerIndicatorNormalColor,defaultPageColor);
+        int strokeColor = a.getColor(R.styleable.BannerPagerView_bannerIndicatorStrokeColor,defaultStrokeColor);
+        float strokeWidth = a.getDimension(R.styleable.BannerPagerView_bannerIndicatorStrokeWidth,defaultStrokeWidth);
+        boolean enableAutoPlay = a.getBoolean(R.styleable.BannerPagerView_enableAutoPlayer,false);
+
+        mBottomIndicator.setSelectedRadius(indicatorSelectorRadius);
+        mBottomIndicator.setNormalRadius(indicatorNormalRadius);
+        mBottomIndicator.setFillColor(indicatorSelectorColor);
+        mBottomIndicator.setPageColor(indicatorNormalColor);
+        mBottomIndicator.setStrokeColor(strokeColor);
+        mBottomIndicator.setStrokeWidth(strokeWidth);
+        setEnableAutoPlay(enableAutoPlay);
+
+        a.recycle();
+    }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -155,9 +192,13 @@ public class BannerPagerView extends FrameLayout {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
-    public void setBannerPagerView(IBannerPageView bannerPagerView){
-        if (bannerPagerView == null) return;
-        mBannerPageView = bannerPagerView;
+    public void setOnPageChangeListener(ViewPager.OnPageChangeListener listener){
+        mOnPageChangeListener = listener;
+    }
+
+    public void setBannerPagerAdapter(BannerPageViewAdapter bannerPageAdapter){
+        if (bannerPageAdapter == null) return;
+        mBannerPageAdapter = bannerPageAdapter;
     }
 
     public void setImageLoader(ImageLoader imageLoader) {
@@ -358,15 +399,25 @@ public class BannerPagerView extends FrameLayout {
 
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            if (mOnPageChangeListener != null){
+                mOnPageChangeListener.onPageScrolled(position,positionOffset,positionOffsetPixels);
+            }
         }
 
         @Override
-        public void onPageSelected(int position) {}
+        public void onPageSelected(int position) {
+            if (mOnPageChangeListener != null){
+                mOnPageChangeListener.onPageSelected(position);
+            }
+        }
 
         @Override
         public void onPageScrollStateChanged(int state) {
             if(state == ViewPager.SCROLL_STATE_IDLE){
                 startAutoPlay();
+            }
+            if (mOnPageChangeListener != null){
+                mOnPageChangeListener.onPageScrollStateChanged(state);
             }
         }
     }
@@ -404,7 +455,7 @@ public class BannerPagerView extends FrameLayout {
                 View bannerView = (View) object;
                 container.removeView(bannerView);
                 int realPosition = position % mBannerList.size();
-                mBannerPageView.destroyPageView(bannerView,realPosition);
+                mBannerPageAdapter.destroyPageView(bannerView,realPosition);
             }
         }
 
@@ -417,7 +468,7 @@ public class BannerPagerView extends FrameLayout {
                 BannerItem bannerItem = mBannerList.get(realPosition);
                 bannerView = mBannerViewCache.get(position);
                 if (bannerView == null){
-                    bannerView = mBannerPageView.createPageView(getContext(),bannerItem,realPosition);
+                    bannerView = mBannerPageAdapter.createPageView(getContext(),bannerItem,realPosition);
                     bannerView.setTag(bannerItem);
                     bannerView.setOnClickListener(mBannerClickListener);
                     mBannerViewCache.put(position,bannerView);
@@ -431,7 +482,7 @@ public class BannerPagerView extends FrameLayout {
                 } catch (Exception e){
                     Log.e(TAG,"Banner view already exists parent",e);
                 }
-                mBannerPageView.finishInstantiateItem(bannerView,bannerItem,realPosition);
+                mBannerPageAdapter.finishInstantiateItem(bannerView,bannerItem,realPosition);
                 if (mImageLoader != null) mImageLoader.displayBannerImage(getContext(),bannerView,bannerItem);
             }
             return bannerView;

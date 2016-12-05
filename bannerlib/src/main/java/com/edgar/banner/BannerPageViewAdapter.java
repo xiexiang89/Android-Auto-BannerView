@@ -20,27 +20,18 @@ import android.content.Context;
 import android.view.View;
 
 /**
- * Created by Edgar on 2016/12/2.
+ * Created by Edgar on 2016/12/5.
  */
-public interface IBannerPageView {
-
+public interface BannerPageViewAdapter {
     /**
      * 创建Banner page view
      * 该方法只会在第一次创建page的时候才会调用,后面将不会再调用.
-     * @see IBannerPageView#finishInstantiateItem(View, BannerItem, int)
+     * @see BannerPageViewAdapter#finishInstantiateItem(View, BannerItem, int)
      * @param context 上下文
      * @param bannerItem banner对象
      * @param position banner位置
      */
-    View createPageView(Context context,BannerItem bannerItem, int position);
-
-    /**
-     * 创建Banner标题View
-     * @param context 上下文
-     * @param bannerItem banner对象
-     * @param position banner位置
-     */
-    View createTitleView(Context context,BannerItem bannerItem,int position);
+    View createPageView(Context context, BannerItem bannerItem, int position);
 
     /**
      * 销毁View时会调用
