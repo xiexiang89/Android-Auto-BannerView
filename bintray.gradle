@@ -28,7 +28,7 @@ install {
 
         pom {
             project {
-                packaging 'aar'
+                packaging PACKAGING
 // Add your description here
                 name 'auto extand ImageView for Android.' //项目描述
                 url siteUrl
