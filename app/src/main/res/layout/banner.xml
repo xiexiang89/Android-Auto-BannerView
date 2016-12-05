@@ -29,6 +29,7 @@
         app:bannerIndicatorNormalRadius="1.5dp"
         app:bannerIndicatorSelectorRadius="2dp"
         app:bannerIndicatorStrokeColor="@android:color/transparent"
+        app:bannerBottomBackground="#71878484"
         app:enableAutoPlayer="true"/>
     <Button
         android:id="@+id/banner_enable_auto_play"

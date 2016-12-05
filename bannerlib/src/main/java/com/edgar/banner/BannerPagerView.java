@@ -23,6 +23,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.support.v4.view.MotionEventCompat;
@@ -37,9 +41,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.edgar.banner.indicator.CirclePageIndicator;
-import com.edgar.banner.indicator.PageIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +59,7 @@ public class BannerPagerView extends FrameLayout {
     }
 
     private static final String TAG = BannerPagerView.class.getSimpleName();
+    private static final int DEFAULT_BOTTOM_BACKGROUND = 0x6a0a0909;
     private static final int INIT_POSITION = 0;
     private static final long DEFAULT_DELAY_TIME = 10*10_00;
     //Banner auto loop play state
@@ -84,6 +89,7 @@ public class BannerPagerView extends FrameLayout {
     private final List<BannerItem> mBannerList = new ArrayList<>();
     private CirclePageIndicator mBottomIndicator;
     private LoopViewPager mViewPage;
+    private LinearLayout mBottomLayout;
     private BannerPageAdapter mPageAdapter;
 
     private long mIntervalTime = DEFAULT_DELAY_TIME;
@@ -152,6 +158,7 @@ public class BannerPagerView extends FrameLayout {
         LayoutInflater.from(getContext()).inflate(R.layout.banner_layout,this,true);
         mBottomIndicator = (CirclePageIndicator) findViewById(R.id.indicator_view);
         mViewPage = (LoopViewPager) findViewById(R.id.carouse_viewpager);
+        mBottomLayout = (LinearLayout) findViewById(R.id.bottom);
         mViewPage.setScroller(new BannerScroller(getContext()));
         mViewPage.setOverScrollMode(View.OVER_SCROLL_NEVER);
         mBottomIndicator.setOnPageChangeListener(mCarousePageListener);
@@ -173,6 +180,10 @@ public class BannerPagerView extends FrameLayout {
         int indicatorNormalColor = a.getColor(R.styleable.BannerPagerView_bannerIndicatorNormalColor,defaultPageColor);
         int strokeColor = a.getColor(R.styleable.BannerPagerView_bannerIndicatorStrokeColor,defaultStrokeColor);
         float strokeWidth = a.getDimension(R.styleable.BannerPagerView_bannerIndicatorStrokeWidth,defaultStrokeWidth);
+        Drawable bannerBottomBackground = a.getDrawable(R.styleable.BannerPagerView_bannerBottomBackground);
+        if (bannerBottomBackground == null){
+            bannerBottomBackground = new ColorDrawable(DEFAULT_BOTTOM_BACKGROUND);
+        }
         boolean enableAutoPlay = a.getBoolean(R.styleable.BannerPagerView_enableAutoPlayer,false);
 
         mBottomIndicator.setSelectedRadius(indicatorSelectorRadius);
@@ -181,6 +192,11 @@ public class BannerPagerView extends FrameLayout {
         mBottomIndicator.setPageColor(indicatorNormalColor);
         mBottomIndicator.setStrokeColor(strokeColor);
         mBottomIndicator.setStrokeWidth(strokeWidth);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            mBottomLayout.setBackground(bannerBottomBackground);
+        } else {
+            mBottomLayout.setBackgroundDrawable(bannerBottomBackground);
+        }
         setEnableAutoPlay(enableAutoPlay);
 
         a.recycle();

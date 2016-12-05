@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="padding_left">10dp</dimen>
+    <dimen name="padding">15dp</dimen>
+    <dimen name="indicator_margin_left">10dp</dimen>
+    <dimen name="indicator_margin_right">10dp</dimen>
 </resources>

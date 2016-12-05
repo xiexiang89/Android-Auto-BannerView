@@ -24,5 +24,6 @@
         <attr name="bannerIndicatorStrokeWidth" format="dimension|reference"/>
         <attr name="bannerIndicatorStrokeColor" format="dimension|color"/>
         <attr name="enableAutoPlayer" format="boolean|reference"/>
+        <attr name="bannerBottomBackground" format="reference|color"/>
     </declare-styleable>
 </resources>

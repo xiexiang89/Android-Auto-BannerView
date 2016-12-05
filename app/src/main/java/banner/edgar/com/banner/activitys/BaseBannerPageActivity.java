@@ -45,6 +45,8 @@ public abstract class BaseBannerPageActivity extends AppCompatActivity {
         addBannerItems(new BannerItem().title("Banner2").url("http://img0.imgtn.bdimg.com/it/u=2425082484,2187620716&fm=11&gp=0.jpg"));
         addBannerItems(new BannerItem().title("Banner3").url("http://img3.imgtn.bdimg.com/it/u=678632234,3415842991&fm=11&gp=0.jpg"));
         addBannerItems(new BannerItem().title("Banner4").url("http://img1.imgtn.bdimg.com/it/u=2007297771,1800118672&fm=11&gp=0.jpg"));
+        addBannerItems(new BannerItem().title("Banner5").url("http://desk.fd.zol-img.com.cn/t_s960x600c5/g5/M00/02/03/ChMkJlbKxo2Icle3ABK7R4H2DZMAALHnABaAUIAErtf905.jpg"));
+        addBannerItems(new BannerItem().title("Banner6").url("http://pic15.nipic.com/20110620/6465749_141657320145_2.jpg"));
     }
 
     private static void addBannerItems(BannerItem bannerItem){
