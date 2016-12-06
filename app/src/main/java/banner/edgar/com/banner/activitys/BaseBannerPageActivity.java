@@ -42,12 +42,24 @@ public abstract class BaseBannerPageActivity extends AppCompatActivity {
 
     private static final List<BannerItem> BANNER_ITEMS = new ArrayList<>();
     static {
-        addBannerItems(new BannerItem().title("001A航母卫星照曝光！与辽宁舰一个模子舰岛略小").url("http://n.sinaimg.cn/mil/20161205/V6Di-fxyiayr9101767.jpg"));
-        addBannerItems(new BannerItem().title("我们的航母编队！辽宁号航母战斗群靓照大曝光").url("http://n.sinaimg.cn/mil/transform/20161205/7HQf-fxyipxf7604307.jpg"));
-        addBannerItems(new BannerItem().title("中国空军司令确认研制轰20 制造完毕明年将首飞").url("http://n.sinaimg.cn/mil/20161205/O97X-fxyiayr9093409.jpg"));
-        addBannerItems(new BannerItem().title("90后特警美女教官走红：教男队员打枪格斗").url("http://n.sinaimg.cn/mil/20161205/csIL-fxyiayr9137844.jpg"));
-        addBannerItems(new BannerItem().title("空中弹药库！F-15与中国版苏30实战挂载对比").url("http://n.sinaimg.cn/mil/20161205/hMHP-fxyipxf7621257.jpg"));
-        addBannerItems(new BannerItem().title("我又不是人民币，没必要所有人都喜欢").url("http://imgsize.ph.126.net/?imgurl=http://cms-bucket.nosdn.127.net/f4cf66965c514dcca50ca69ab4ad4f1220161202120101.png_600x250x1x85.jpg"));
+        addBannerItems(createBanner("多喝开水 至少暖在心里",
+                "http://p3.music.126.net/KNdGeLq-J4XyK6PC1uDofQ==/18567452859744456.jpg"));
+        addBannerItems(createBanner("28岁未成年",
+                "http://p3.music.126.net/UUNCMv9sMW6nAjepzayA4A==/18686200115549047.jpg"));
+        addBannerItems(createBanner("我们的航母编队！辽宁号航母战斗群靓照大曝光",
+                "http://n.sinaimg.cn/mil/transform/20161205/7HQf-fxyipxf7604307.jpg"));
+        addBannerItems(createBanner("中国空军司令确认研制轰20 制造完毕明年将首飞",
+                "http://n.sinaimg.cn/mil/20161205/O97X-fxyiayr9093409.jpg"));
+        addBannerItems(createBanner("90后特警美女教官走红：教男队员打枪格斗",
+                "http://n.sinaimg.cn/mil/20161205/csIL-fxyiayr9137844.jpg"));
+        addBannerItems(createBanner("空中弹药库！F-15与中国版苏30实战挂载对比",
+                "http://n.sinaimg.cn/mil/20161205/hMHP-fxyipxf7621257.jpg"));
+        addBannerItems(createBanner("红豆词-忘不了新愁与旧愁",
+                "http://p4.music.126.net/DXi1EXNhX1cfjiVUn3HtpA==/18651015743458158.jpg"));
+    }
+
+    private static BannerItem createBanner(CharSequence title,String url){
+        return new BannerItem().title(title).url(url);
     }
 
     private static void addBannerItems(BannerItem bannerItem){

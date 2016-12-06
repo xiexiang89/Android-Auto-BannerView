@@ -494,10 +494,11 @@ public class CirclePageIndicator extends View implements PageIndicator {
             //We were told how big to be
             result = specSize;
         } else {
+            float totalRadius = totalRadius();
             //Calculate the width according the views count
             final int count = mViewPager.getAdapter().getCount();
             result = (int)(getPaddingLeft() + getPaddingRight()
-                    + (count * 2 * mSelectedRadius) + (count - 1) * mSelectedRadius + 1);
+                    + (count * 2 * totalRadius) + (count - 1) * totalRadius + 1);
             //Respect AT_MOST value if that was what is called for by measureSpec
             if (specMode == MeasureSpec.AT_MOST) {
                 result = Math.min(result, specSize);
@@ -530,6 +531,10 @@ public class CirclePageIndicator extends View implements PageIndicator {
             }
         }
         return result;
+    }
+
+    private float totalRadius(){
+        return mSelectedRadius+mNormalRadius;
     }
 
     @Override

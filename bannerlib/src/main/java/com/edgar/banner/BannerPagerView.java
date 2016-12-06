@@ -183,6 +183,10 @@ public class BannerPagerView extends FrameLayout {
         int indicatorNormalColor = a.getColor(R.styleable.BannerPagerView_bannerIndicatorNormalColor,defaultPageColor);
         int strokeColor = a.getColor(R.styleable.BannerPagerView_bannerIndicatorStrokeColor,defaultStrokeColor);
         float strokeWidth = a.getDimension(R.styleable.BannerPagerView_bannerIndicatorStrokeWidth,defaultStrokeWidth);
+        int indicatorPaddingLeft = a.getDimensionPixelSize(R.styleable.BannerPagerView_indicatorPaddingLeft,0);
+        int indicatorPaddingRight = a.getDimensionPixelSize(R.styleable.BannerPagerView_indicatorPaddingRight,0);
+        int indicatorPaddingTop = a.getDimensionPixelSize(R.styleable.BannerPagerView_indicatorPaddingTop,0);
+        int indicatorPaddingBottom = a.getDimensionPixelSize(R.styleable.BannerPagerView_indicatorPaddingBottom,0);
         mIndicatorGravity = a.getInt(R.styleable.BannerPagerView_bannerIndicatorGravity, Gravity.CENTER);
         Drawable bannerBottomBackground = a.getDrawable(R.styleable.BannerPagerView_bannerBottomBackground);
         if (bannerBottomBackground == null){
@@ -196,6 +200,9 @@ public class BannerPagerView extends FrameLayout {
         mBottomIndicator.setPageColor(indicatorNormalColor);
         mBottomIndicator.setStrokeColor(strokeColor);
         mBottomIndicator.setStrokeWidth(strokeWidth);
+        mBottomIndicator.setPadding(indicatorPaddingLeft,indicatorPaddingTop,indicatorPaddingRight,
+                indicatorPaddingBottom);
+        mBottomLayout.setGravity(mIndicatorGravity);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             mBottomLayout.setBackground(bannerBottomBackground);
         } else {
@@ -209,10 +216,6 @@ public class BannerPagerView extends FrameLayout {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         mViewPage.getLayoutParams().height = getLayoutParams().height;
-        if (mIndicatorGravity == Gravity.CENTER){
-            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mBottomIndicator.getLayoutParams();
-            params.bottomMargin = params.topMargin = getResources().getDimensionPixelOffset(R.dimen.padding);
-        }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
@@ -220,6 +223,12 @@ public class BannerPagerView extends FrameLayout {
         mOnPageChangeListener = listener;
     }
 
+    /**
+     * <p>设置Banner title view,title view的位置取决与indicator view的位置.
+     * 如果indicator是在left,title会添加到right;反之,则添加到left.
+     * 如果你需要一个title,则必须设置bannerIndicatorGravity属性</p>
+     * @param bannerTitleView {@link BannerTitleView}
+     */
     public void setBannerTitleView(BannerTitleView bannerTitleView){
         mBannerTitleView = bannerTitleView;
         int layoutId = mBannerTitleView.getTitleLayoutId();
@@ -229,10 +238,16 @@ public class BannerPagerView extends FrameLayout {
         params.gravity = Gravity.CENTER_VERTICAL;
         bannerTitleView.onFinishInflater(titleView);
         if (mIndicatorGravity == Gravity.LEFT){
+            //indicator 如果是在left,则直接addView
             mBottomLayout.addView(titleView);
         } else if (mIndicatorGravity == Gravity.RIGHT){
+            //indicator 如果是在right,就addView第一个index
             mBottomLayout.addView(titleView,0);
         }
+    }
+
+    public void setBannerBottomVisibility(int visibility){
+        mBottomLayout.setVisibility(visibility);
     }
 
     public void setBannerPagerAdapter(BannerPageViewAdapter bannerPageAdapter){

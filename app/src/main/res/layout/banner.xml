@@ -29,7 +29,9 @@
         app:bannerIndicatorNormalRadius="1.5dp"
         app:bannerIndicatorSelectorRadius="2dp"
         app:bannerIndicatorStrokeColor="@android:color/transparent"
-        app:bannerBottomBackground="#71181818"
+        app:bannerBottomBackground="#850d0d0d"
+        app:indicatorPaddingBottom="10dp"
+        app:indicatorPaddingTop="10dp"
         app:bannerIndicatorGravity="right"
         app:enableAutoPlayer="true"/>
     <Button

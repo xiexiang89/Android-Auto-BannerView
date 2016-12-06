@@ -28,6 +28,11 @@
         <attr name="bannerIndicatorGravity" format="enum">
             <enum name="left" value="3"/>
             <enum name="right" value="5"/>
+            <enum name="center" value="17"/>
         </attr>
+        <attr name="indicatorPaddingLeft" format="dimension|reference"/>
+        <attr name="indicatorPaddingRight" format="dimension|reference"/>
+        <attr name="indicatorPaddingBottom" format="dimension|reference"/>
+        <attr name="indicatorPaddingTop" format="dimension|reference"/>
     </declare-styleable>
 </resources>

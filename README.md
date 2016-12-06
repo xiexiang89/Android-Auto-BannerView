@@ -22,3 +22,5 @@ bannerPagerView.setBannerPagerView(new CustomBannerPagerView()); //自定义Bann
 bannerPagerView.setImageLoader(new PicassoImageLoader()); //设置一个ImageLoader,用于加载图片
 bannerPagerView.setBanner(banners);
 ```
+gradle中使用:
+compile 'com.edgar.android:bannerlib:1.0.2
