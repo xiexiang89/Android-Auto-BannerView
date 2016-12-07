@@ -28,7 +28,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
-import android.os.HandlerThread;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -60,9 +61,9 @@ public class BannerPagerView extends FrameLayout {
     }
 
     private static final String TAG = BannerPagerView.class.getSimpleName();
-    private static final int DEFAULT_BOTTOM_BACKGROUND = 0x6a0a0909;
+    private static final int DEFAULT_BOTTOM_BACKGROUND = Color.TRANSPARENT;
     private static final int INIT_POSITION = 0;
-    private static final long DEFAULT_DELAY_TIME = 10*10_00;
+    private static final long DEFAULT_DELAY_TIME = 8*10_00;
     //Banner auto loop play state
     private static final int STATE_STOP = 0x00000000;
     private static final int STATE_RUNNING = 0x00000001;
@@ -97,8 +98,6 @@ public class BannerPagerView extends FrameLayout {
     //Banner flags
     private int mBannerFlags;
     private final BannerPageListener mCarousePageListener = new BannerPageListener();
-    private HandlerThread mLooperThread;
-    private Handler mLooperHandler;
 
     private int mIndicatorGravity;
     private BannerPageViewAdapter mBannerPageAdapter;
@@ -116,12 +115,18 @@ public class BannerPagerView extends FrameLayout {
         }
     };
 
-    private final Runnable mBannerUpdateRunnable = new Runnable() {
+    private static final int LOOPER = 1;
+    private final Handler mBannerLooperHandler = new Handler(Looper.getMainLooper()){
         @Override
-        public void run() {
-            if (isEnableAutoPlay() && isBannerLoopRunning()){
-                updateViewPage();
-                mLooperHandler.postDelayed(mBannerLooperRunnable,mIntervalTime);
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case LOOPER:
+                    if (isEnableAutoPlay() && isBannerLoopRunning()){
+                        updateViewPage();
+                        sendEmptyMessageDelayed(LOOPER,mIntervalTime);
+                    }
+                    Log.e(TAG,"Banner looper");
+                    break;
             }
         }
 
@@ -129,14 +134,6 @@ public class BannerPagerView extends FrameLayout {
             int currentItem = mViewPage.getCurrentItem();
             int newItem = currentItem+1;
             mViewPage.setCurrentItem(newItem,true);
-        }
-    };
-    private final Runnable mBannerLooperRunnable = new Runnable() {
-        @Override
-        public void run() {
-            if (isEnableAutoPlay() && isBannerLoopRunning()){
-                post(mBannerUpdateRunnable);
-            }
         }
     };
 
@@ -155,7 +152,7 @@ public class BannerPagerView extends FrameLayout {
         init(attrs,defStyle);
     }
 
-    private void init(AttributeSet attrs,int defStyle){
+    private void init(AttributeSet attrs, int defStyle){
         Context context = getContext();
         Resources resources = getResources();
         LayoutInflater.from(getContext()).inflate(R.layout.banner_layout,this,true);
@@ -366,7 +363,7 @@ public class BannerPagerView extends FrameLayout {
         super.onDetachedFromWindow();
         getContext().unregisterReceiver(mScreenReceiver);
         //View离开窗体时,需要停止滚动
-        stopAutoPlay();
+        destroy();
     }
 
     private void registerScreenReceiver(){
@@ -378,20 +375,15 @@ public class BannerPagerView extends FrameLayout {
 
     public void pauseAutoPlay(){
         setBannerFlags(STATE_STOP,STATE_MARK);
-        if (mLooperHandler != null){
-            mLooperHandler.removeCallbacks(mBannerLooperRunnable);
-            removeCallbacks(mBannerUpdateRunnable);
-        }
+        mBannerLooperHandler.removeMessages(LOOPER);
     }
 
     /**
-     * 停止轮询播放Banner
+     * <p>停止轮询播放Banner</p>
+     * <p>该方法必须调用,请在页面销毁的时候调用该方法,以停止轮播</p>
      */
-    public void stopAutoPlay(){
+    public void destroy(){
         pauseAutoPlay();
-        if (mLooperThread != null){
-            mLooperThread.quit();
-        }
         clearAllData();
         clearAllView();
     }
@@ -404,13 +396,8 @@ public class BannerPagerView extends FrameLayout {
         if (isBannerLoopRunning()) return;
         if (isBannerLessThanOne()) return;
         if(mPageAdapter == null) return;
-        if (mLooperThread == null){
-            mLooperThread = new HandlerThread(TAG);
-            mLooperThread.start();
-            mLooperHandler = new Handler(mLooperThread.getLooper());
-        }
-        mLooperHandler.postDelayed(mBannerLooperRunnable,mIntervalTime);
         setBannerFlags(STATE_RUNNING,STATE_MARK);
+        mBannerLooperHandler.sendEmptyMessageDelayed(LOOPER,mIntervalTime);
     }
 
     @Override
@@ -488,11 +475,10 @@ public class BannerPagerView extends FrameLayout {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if(Intent.ACTION_SCREEN_ON.equals(action)){
+            if(Intent.ACTION_SCREEN_OFF.equals(action)){
                 pauseAutoPlay();
+            } else if (Intent.ACTION_SCREEN_ON.equals(action)){
                 startAutoPlay();
-            } else if(Intent.ACTION_SCREEN_OFF.equals(action)){
-                pauseAutoPlay();
             }
         }
     };
