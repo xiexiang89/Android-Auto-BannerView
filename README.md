@@ -23,4 +23,14 @@ bannerPagerView.setImageLoader(new PicassoImageLoader()); //设置一个ImageLoa
 bannerPagerView.setBanner(banners);
 ```
 gradle中使用:
-compile 'com.edgar.android:bannerlib:1.0.2
+抱歉，因为该项目一直未添加到公用仓库，maven引用如下
+请在你的module下的gradle.build文件中添加以下代码:
+repositories {
+    maven {
+        url 'https://dl.bintray.com/edgar/maven/'
+    }
+}
+
+dependencies{
+    compile 'com.edgar.android:bannerlib:1.0.3'
+}
