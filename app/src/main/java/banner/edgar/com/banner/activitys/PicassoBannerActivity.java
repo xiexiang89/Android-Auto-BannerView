@@ -27,7 +27,7 @@ import banner.edgar.com.banner.PicassoImageLoader;
 /**
  * Created by Edgar on 2016/12/3.
  */
-public class PicassoBannerActivity extends BaseBannerPageActivity{
+public class PicassoBannerActivity extends BannerControllActivity{
 
     private PicassoImageLoader picassoImageLoader;
     @Override

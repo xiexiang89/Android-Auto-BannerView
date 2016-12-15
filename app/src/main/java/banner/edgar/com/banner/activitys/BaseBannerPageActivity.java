@@ -17,6 +17,7 @@
 package banner.edgar.com.banner.activitys;
 
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
@@ -40,7 +41,7 @@ import banner.edgar.com.banner.ToastUtils;
  */
 public abstract class BaseBannerPageActivity extends AppCompatActivity {
 
-    private static final List<BannerItem> BANNER_ITEMS = new ArrayList<>();
+    protected static final List<BannerItem> BANNER_ITEMS = new ArrayList<>();
     static {
         addBannerItems(createBanner("多喝开水 至少暖在心里",
                 "http://p3.music.126.net/KNdGeLq-J4XyK6PC1uDofQ==/18567452859744456.jpg"));
@@ -66,40 +67,14 @@ public abstract class BaseBannerPageActivity extends AppCompatActivity {
         BANNER_ITEMS.add(bannerItem);
     }
 
-    private BannerPagerView mBannerPagerView;
+    protected BannerPagerView mBannerPagerView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.banner);
+        setContentView(getLayoutId());
         mBannerPagerView = (BannerPagerView) findViewById(R.id.banner_pager);
-        final Button button = (Button) findViewById(R.id.banner_enable_auto_play);
-        Button slowView = (Button) findViewById(R.id.slow);
-        slowView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mBannerPagerView.setIntervalTime(8*1000);
-            }
-        });
-        Button fastView = (Button) findViewById(R.id.fast);
-        fastView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mBannerPagerView.setIntervalTime(1200);
-            }
-        });
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mBannerPagerView.isEnableAutoPlay()){
-                    mBannerPagerView.setEnableAutoPlay(false);
-                    button.setText("启用自动播放");
-                } else {
-                    mBannerPagerView.setEnableAutoPlay(true);
-                    button.setText("禁用自动播放");
-                }
-            }
-        });
+
         mBannerPagerView.setBannerPagerAdapter(getBannerPageViewAdapter());
         mBannerPagerView.setImageLoader(getBannerImageLoader());
         mBannerPagerView.setOnBannerClickListener(new BannerPagerView.OnBannerClickListener() {
@@ -119,4 +94,7 @@ public abstract class BaseBannerPageActivity extends AppCompatActivity {
     protected abstract ImageLoader getBannerImageLoader();
 
     protected abstract BannerPageViewAdapter getBannerPageViewAdapter();
+
+    @LayoutRes
+    protected abstract int getLayoutId();
 }

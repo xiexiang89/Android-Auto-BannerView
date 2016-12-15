@@ -42,11 +42,16 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.Scroller;
 
 import com.edgar.banner.indicator.CirclePageIndicator;
+import com.edgar.transformers.PageTransformerFactory;
+import com.edgar.transformers.TransformerType;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -103,6 +108,7 @@ public class BannerPagerView extends FrameLayout {
     private BannerPageViewAdapter mBannerPageAdapter;
     private ImageLoader mImageLoader;
     private BannerTitleView mBannerTitleView;
+    private Scroller mBannerScroller;
     private ViewPager.OnPageChangeListener mOnPageChangeListener;
 
     private OnBannerClickListener mOnBannerClickListener;
@@ -159,7 +165,7 @@ public class BannerPagerView extends FrameLayout {
         mBottomIndicator = (CirclePageIndicator) findViewById(R.id.indicator_view);
         mViewPage = (LoopViewPager) findViewById(R.id.carouse_viewpager);
         mBottomLayout = (LinearLayout) findViewById(R.id.bottom);
-        mViewPage.setScroller(new BannerScroller(getContext()));
+        setBannerScroller(new BannerScroller(getContext()));
         mViewPage.setOverScrollMode(View.OVER_SCROLL_NEVER);
         mBottomIndicator.setOnPageChangeListener(mCarousePageListener);
         mBannerPageAdapter = new DefaultBannerPageViewAdapter();
@@ -205,6 +211,7 @@ public class BannerPagerView extends FrameLayout {
         } else {
             mBottomLayout.setBackgroundDrawable(bannerBottomBackground);
         }
+        setBannerPageTransformer(false,TransformerType.ZoomOutSlide);
         setEnableAutoPlay(enableAutoPlay);
 
         a.recycle();
@@ -218,6 +225,70 @@ public class BannerPagerView extends FrameLayout {
 
     public void setOnPageChangeListener(ViewPager.OnPageChangeListener listener){
         mOnPageChangeListener = listener;
+    }
+
+    /**
+     * Set BannerPageTransformer type {@link TransformerType}
+     * @param reverseDrawingOrder true if the supplied PageTransformer requires page views
+     *                            to be drawn from last to first instead of first to last.
+     * @param transformerType PageTransformer that will modify each page's animation properties
+     */
+    public void setBannerPageTransformer(boolean reverseDrawingOrder,TransformerType transformerType){
+        setBannerPageTransformer(reverseDrawingOrder,PageTransformerFactory.createPageTransformer(transformerType));
+    }
+
+    /**
+     * Set a {@link ViewPager.PageTransformer} that will be called for each attached page whenever
+     * the scroll position is changed. This allows the application to apply custom property
+     * transformations to each page, overriding the default sliding look and feel.
+     *
+     * <p><em>Note:</em> Prior to Android 3.0 the property animation APIs did not exist.
+     * As a result, setting a PageTransformer prior to Android 3.0 (API 11) will have no effect.</p>
+     * @param reverseDrawingOrder true if the supplied PageTransformer requires page views
+     *                            to be drawn from last to first instead of first to last.
+     * @param pageTransformer PageTransformer that will modify each page's animation properties
+     */
+    public void setBannerPageTransformer(boolean reverseDrawingOrder,final ViewPager.PageTransformer pageTransformer){
+        if (pageTransformer == null) return;
+        mViewPage.setPageTransformer(reverseDrawingOrder, new LoopViewPager.PageTransformer() {
+            @Override
+            public void transformPage(View page, float position) {
+                pageTransformer.transformPage(page,position);
+            }
+        });
+    }
+
+    public void setBannerScroller(Scroller scroller){
+        try{
+            Field scrollerField = LoopViewPager.class.getDeclaredField("mScroller");
+            scrollerField.setAccessible(true);
+            scrollerField.set(mViewPage,scroller);
+            mBannerScroller = scroller;
+        }catch (Exception e){
+            Log.e(TAG,"Set ViewPager scroller fail",e);
+        }
+    }
+
+    /**
+     * If the default scroller is used, it will be valid
+     * @param duration Duration of the scroll in milliseconds.
+     */
+    public void setBannerScrollerDuration(int duration){
+        if (mBannerScroller instanceof BannerScroller){
+            ((BannerScroller) mBannerScroller).setDuration(duration);
+        }
+    }
+
+    /**
+     * This method only sets the animation interpolator, the internal use of BannerScroller
+     * @param interpolator {@link Interpolator}
+     * @param duration Duration of the scroll in milliseconds.
+     */
+    public void setBannerScrollerInterpolator(Interpolator interpolator,int duration){
+        BannerScroller scroller = new BannerScroller(getContext(),interpolator);
+        if (duration > 0)
+            scroller.setDuration(duration);
+        setBannerScroller(scroller);
     }
 
     /**
@@ -448,12 +519,13 @@ public class BannerPagerView extends FrameLayout {
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             if (mOnPageChangeListener != null){
-                mOnPageChangeListener.onPageScrolled(position,positionOffset,positionOffsetPixels);
+                mOnPageChangeListener.onPageScrolled(realPosition(position),positionOffset,positionOffsetPixels);
             }
         }
 
         @Override
         public void onPageSelected(int position) {
+            position = realPosition(position);
             if (mOnPageChangeListener != null){
                 mOnPageChangeListener.onPageSelected(position);
             }
@@ -482,6 +554,10 @@ public class BannerPagerView extends FrameLayout {
             }
         }
     };
+
+    private int realPosition(int position){
+        return position % mBannerList.size();
+    }
 
     private class BannerPageAdapter extends PagerAdapter {
         private SparseArray<View> mBannerViewCache = new SparseArray<>();
@@ -512,14 +588,14 @@ public class BannerPagerView extends FrameLayout {
             View bannerView = null;
             Log.i(TAG,"instantiateItem item position:"+position);
             if(position >= 0 && position <= getCount()-1){
-                int realPosition = position % mBannerList.size();
+                int realPosition = realPosition(position);
                 BannerItem bannerItem = mBannerList.get(realPosition);
                 bannerView = mBannerViewCache.get(position);
                 if (bannerView == null){
                     bannerView = mBannerPageAdapter.createPageView(getContext(),bannerItem,realPosition);
                     bannerView.setTag(bannerItem);
                     bannerView.setOnClickListener(mBannerClickListener);
-                    mBannerViewCache.put(position,bannerView);
+//                    mBannerViewCache.put(position,bannerView);
                 }
                 if (bannerView.getParent() != null){
                     ViewGroup viewGroup = (ViewGroup)bannerView.getParent();

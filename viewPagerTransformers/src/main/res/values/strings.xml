@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright (C) 2016 The Edgar
   ~
@@ -16,9 +15,5 @@
   -->
 
 <resources>
-    <array name="banner_demo">
-        <item>FrescoBanner</item>
-        <item>PicassoBanner</item>
-        <item>BannerTransformers</item>
-    </array>
+    <string name="app_name">viewPagerTransformers</string>
 </resources>

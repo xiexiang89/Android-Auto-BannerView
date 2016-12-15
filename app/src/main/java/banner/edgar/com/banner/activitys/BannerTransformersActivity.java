@@ -18,24 +18,42 @@ package banner.edgar.com.banner.activitys;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
 
 import com.edgar.banner.BannerPageViewAdapter;
 import com.edgar.banner.ImageLoader;
+import com.edgar.transformers.TransformerType;
 import com.facebook.drawee.backends.pipeline.Fresco;
 
 import banner.edgar.com.banner.FrescoBannerPageView;
+import banner.edgar.com.banner.R;
 
 /**
- * Created by Edgar on 2016/12/3.
+ * Created by Edgar on 2016/12/16.
  */
-public class FrescoBannerActivity extends BannerControllActivity{
-
+public class BannerTransformersActivity extends BaseBannerPageActivity {
     private FrescoBannerPageView frescoBannerPageView;
+    private ListView mTransformerListView;
+    private ArrayAdapter<TransformerType> mTransformerAdapter;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Fresco.initialize(getApplicationContext());
         frescoBannerPageView = new FrescoBannerPageView();
         super.onCreate(savedInstanceState);
+        mTransformerListView = (ListView) findViewById(R.id.listview);
+        mTransformerAdapter = new ArrayAdapter<TransformerType>(this,android.R.layout.simple_list_item_1,TransformerType.values());
+        mTransformerListView.setAdapter(mTransformerAdapter);
+        mTransformerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mBannerPagerView.setBannerPageTransformer(false,mTransformerAdapter.getItem(position));
+            }
+        });
     }
 
     @Override
@@ -46,5 +64,10 @@ public class FrescoBannerActivity extends BannerControllActivity{
     @Override
     protected BannerPageViewAdapter getBannerPageViewAdapter() {
         return frescoBannerPageView;
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.banner_transformer;
     }
 }

@@ -17,6 +17,7 @@
         </activity>
         <activity android:name=".activitys.FrescoBannerActivity"/>
         <activity android:name=".activitys.PicassoBannerActivity"/>
+        <activity android:name=".activitys.BannerTransformersActivity"/>
     </application>
 <uses-permission android:name="android.permission.INTERNET"/>
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
