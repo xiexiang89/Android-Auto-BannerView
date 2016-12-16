@@ -30,6 +30,25 @@
             <enum name="right" value="5"/>
             <enum name="center" value="17"/>
         </attr>
+        <attr name="bannerAnimation" format="enum">
+            <enum name="Accordion" value="1"/>
+            <enum name="BackgroundToForeground" value="2"/>
+            <enum name="CubeIn" value="3"/>
+            <enum name="CubeOut" value="4"/>
+            <enum name="DepthPage" value="5"/>
+            <enum name="Fade" value="6"/>
+            <enum name="FlipHorizontal" value="7"/>
+            <enum name="FlipVertical" value="8"/>
+            <enum name="FlipPage" value="9"/>
+            <enum name="ForegroundToBackground" value="10"/>
+            <enum name="RotateDown" value="11"/>
+            <enum name="RotateUp" value="12"/>
+            <enum name="Stack" value="13"/>
+            <enum name="Tablet" value="14"/>
+            <enum name="ZoomIn" value="15"/>
+            <enum name="ZoomOutSlide" value="16"/>
+            <enum name="ZoomOut" value="17"/>
+        </attr>
         <attr name="indicatorPaddingLeft" format="dimension|reference"/>
         <attr name="indicatorPaddingRight" format="dimension|reference"/>
         <attr name="indicatorPaddingBottom" format="dimension|reference"/>

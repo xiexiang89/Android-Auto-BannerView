@@ -33,7 +33,8 @@
         app:indicatorPaddingBottom="10dp"
         app:indicatorPaddingTop="10dp"
         app:bannerIndicatorGravity="right"
-        app:enableAutoPlayer="true"/>
+        app:enableAutoPlayer="true"
+        app:bannerAnimation="Accordion"/>
     <ListView
         android:id="@+id/listview"
         android:layout_width="match_parent"

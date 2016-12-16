@@ -20,17 +20,37 @@ package com.edgar.transformers;
  * Created by Edgar on 2016/12/15.
  */
 public enum  TransformerType {
-    Accordion,
-    CubeIn,
-    CubeOut,
-    DepthPage,
-    Fade,
-    ZoomOut,
-    ZoomIn,
-    ZoomOutSlide,
-    BackgroundToForeground,
-    ForegroundToBackground,
-    FlipVertical,FlipHorizontal,FlipPageView,
-    RotateUp,RotateDown,Tablet,
-    Stack
+    Accordion(1),
+    BackgroundToForeground(2),
+    CubeIn(3),
+    CubeOut(4),
+    DepthPage(5),
+    Fade(6),
+    FlipHorizontal(7),
+    FlipVertical(8),
+    FlipPageView(9),
+    ForegroundToBackground(10),
+    RotateDown(11),
+    RotateUp(12),
+    Stack(13),
+    Tablet(14),
+    ZoomIn(15),
+    ZoomOutSlide(16),
+    ZoomOut(17);
+
+    private int id;
+
+    TransformerType(int id){
+        this.id = id;
+    }
+
+    public static TransformerType convert(int id){
+        TransformerType[] values = TransformerType.values();
+        for (TransformerType type:values) {
+            if (type.id == id){
+                return type;
+            }
+        }
+        return null;
+    }
 }

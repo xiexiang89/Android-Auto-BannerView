@@ -190,6 +190,7 @@ public class BannerPagerView extends FrameLayout {
         int indicatorPaddingRight = a.getDimensionPixelSize(R.styleable.BannerPagerView_indicatorPaddingRight,0);
         int indicatorPaddingTop = a.getDimensionPixelSize(R.styleable.BannerPagerView_indicatorPaddingTop,0);
         int indicatorPaddingBottom = a.getDimensionPixelSize(R.styleable.BannerPagerView_indicatorPaddingBottom,0);
+        int transformerType = a.getInt(R.styleable.BannerPagerView_bannerAnimation,0);
         mIndicatorGravity = a.getInt(R.styleable.BannerPagerView_bannerIndicatorGravity, Gravity.CENTER);
         Drawable bannerBottomBackground = a.getDrawable(R.styleable.BannerPagerView_bannerBottomBackground);
         if (bannerBottomBackground == null){
@@ -211,6 +212,7 @@ public class BannerPagerView extends FrameLayout {
         } else {
             mBottomLayout.setBackgroundDrawable(bannerBottomBackground);
         }
+        setBannerPageTransformer(true,TransformerType.convert(transformerType));
         setEnableAutoPlay(enableAutoPlay);
 
         a.recycle();
