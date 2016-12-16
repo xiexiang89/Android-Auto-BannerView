@@ -61,14 +61,14 @@ import java.util.List;
  */
 public class BannerPagerView extends FrameLayout {
 
-    public interface OnBannerClickListener{
+    public interface OnBannerClickListener {
         void onBannerClick(BannerItem bannerItem);
     }
 
     private static final String TAG = BannerPagerView.class.getSimpleName();
     private static final int DEFAULT_BOTTOM_BACKGROUND = Color.TRANSPARENT;
     private static final int INIT_POSITION = 0;
-    private static final long DEFAULT_DELAY_TIME = 8*10_00;
+    private static final long DEFAULT_DELAY_TIME = 8 * 10_00;
     //Banner auto loop play state
     private static final int STATE_STOP = 0x00000000;
     private static final int STATE_RUNNING = 0x00000001;
@@ -109,59 +109,59 @@ public class BannerPagerView extends FrameLayout {
     private ImageLoader mImageLoader;
     private BannerTitleView mBannerTitleView;
     private Scroller mBannerScroller;
-    private ViewPager.OnPageChangeListener mOnPageChangeListener;
+    private List<ViewPager.OnPageChangeListener> mOnPageChangeListeners;
 
     private OnBannerClickListener mOnBannerClickListener;
     private final View.OnClickListener mBannerClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (mOnBannerClickListener != null){
+            if (mOnBannerClickListener != null) {
                 mOnBannerClickListener.onBannerClick((BannerItem) v.getTag());
             }
         }
     };
 
     private static final int LOOPER = 1;
-    private final Handler mBannerLooperHandler = new Handler(Looper.getMainLooper()){
+    private final Handler mBannerLooperHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what){
+            switch (msg.what) {
                 case LOOPER:
-                    if (isEnableAutoPlay() && isBannerLoopRunning()){
+                    if (isEnableAutoPlay() && isBannerLoopRunning()) {
                         updateViewPage();
-                        sendEmptyMessageDelayed(LOOPER,mIntervalTime);
+                        sendEmptyMessageDelayed(LOOPER, mIntervalTime);
                     }
-                    Log.e(TAG,"Banner looper");
+                    Log.e(TAG, "Banner looper");
                     break;
             }
         }
 
-        private void updateViewPage(){
+        private void updateViewPage() {
             int currentItem = mViewPage.getCurrentItem();
-            int newItem = currentItem+1;
-            mViewPage.setCurrentItem(newItem,true);
+            int newItem = currentItem + 1;
+            mViewPage.setCurrentItem(newItem, true);
         }
     };
 
     public BannerPagerView(Context context) {
         super(context);
-        init(null,0);
+        init(null, 0);
     }
 
     public BannerPagerView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(attrs,0);
+        init(attrs, 0);
     }
 
-    public BannerPagerView(Context context, AttributeSet attrs, int defStyle){
-        super(context,attrs,defStyle);
-        init(attrs,defStyle);
+    public BannerPagerView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        init(attrs, defStyle);
     }
 
-    private void init(AttributeSet attrs, int defStyle){
+    private void init(AttributeSet attrs, int defStyle) {
         Context context = getContext();
         Resources resources = getResources();
-        LayoutInflater.from(getContext()).inflate(R.layout.banner_layout,this,true);
+        LayoutInflater.from(getContext()).inflate(R.layout.banner_layout, this, true);
         mBottomIndicator = (CirclePageIndicator) findViewById(R.id.indicator_view);
         mViewPage = (LoopViewPager) findViewById(R.id.carouse_viewpager);
         mBottomLayout = (LinearLayout) findViewById(R.id.bottom);
@@ -182,21 +182,21 @@ public class BannerPagerView extends FrameLayout {
                 defaultSelectRadius);
         float indicatorNormalRadius = a.getDimension(R.styleable.BannerPagerView_bannerIndicatorNormalRadius,
                 defaultNormalRadius);
-        int indicatorSelectorColor = a.getColor(R.styleable.BannerPagerView_bannerIndicatorSelectorColor,defaultFillColor);
-        int indicatorNormalColor = a.getColor(R.styleable.BannerPagerView_bannerIndicatorNormalColor,defaultPageColor);
-        int strokeColor = a.getColor(R.styleable.BannerPagerView_bannerIndicatorStrokeColor,defaultStrokeColor);
-        float strokeWidth = a.getDimension(R.styleable.BannerPagerView_bannerIndicatorStrokeWidth,defaultStrokeWidth);
-        int indicatorPaddingLeft = a.getDimensionPixelSize(R.styleable.BannerPagerView_indicatorPaddingLeft,0);
-        int indicatorPaddingRight = a.getDimensionPixelSize(R.styleable.BannerPagerView_indicatorPaddingRight,0);
-        int indicatorPaddingTop = a.getDimensionPixelSize(R.styleable.BannerPagerView_indicatorPaddingTop,0);
-        int indicatorPaddingBottom = a.getDimensionPixelSize(R.styleable.BannerPagerView_indicatorPaddingBottom,0);
-        int transformerType = a.getInt(R.styleable.BannerPagerView_bannerAnimation,0);
+        int indicatorSelectorColor = a.getColor(R.styleable.BannerPagerView_bannerIndicatorSelectorColor, defaultFillColor);
+        int indicatorNormalColor = a.getColor(R.styleable.BannerPagerView_bannerIndicatorNormalColor, defaultPageColor);
+        int strokeColor = a.getColor(R.styleable.BannerPagerView_bannerIndicatorStrokeColor, defaultStrokeColor);
+        float strokeWidth = a.getDimension(R.styleable.BannerPagerView_bannerIndicatorStrokeWidth, defaultStrokeWidth);
+        int indicatorPaddingLeft = a.getDimensionPixelSize(R.styleable.BannerPagerView_indicatorPaddingLeft, 0);
+        int indicatorPaddingRight = a.getDimensionPixelSize(R.styleable.BannerPagerView_indicatorPaddingRight, 0);
+        int indicatorPaddingTop = a.getDimensionPixelSize(R.styleable.BannerPagerView_indicatorPaddingTop, 0);
+        int indicatorPaddingBottom = a.getDimensionPixelSize(R.styleable.BannerPagerView_indicatorPaddingBottom, 0);
+        int transformerType = a.getInt(R.styleable.BannerPagerView_bannerAnimation, 0);
         mIndicatorGravity = a.getInt(R.styleable.BannerPagerView_bannerIndicatorGravity, Gravity.CENTER);
         Drawable bannerBottomBackground = a.getDrawable(R.styleable.BannerPagerView_bannerBottomBackground);
-        if (bannerBottomBackground == null){
+        if (bannerBottomBackground == null) {
             bannerBottomBackground = new ColorDrawable(DEFAULT_BOTTOM_BACKGROUND);
         }
-        boolean enableAutoPlay = a.getBoolean(R.styleable.BannerPagerView_enableAutoPlayer,false);
+        boolean enableAutoPlay = a.getBoolean(R.styleable.BannerPagerView_enableAutoPlayer, false);
 
         mBottomIndicator.setSelectedRadius(indicatorSelectorRadius);
         mBottomIndicator.setNormalRadius(indicatorNormalRadius);
@@ -204,7 +204,7 @@ public class BannerPagerView extends FrameLayout {
         mBottomIndicator.setPageColor(indicatorNormalColor);
         mBottomIndicator.setStrokeColor(strokeColor);
         mBottomIndicator.setStrokeWidth(strokeWidth);
-        mBottomIndicator.setPadding(indicatorPaddingLeft,indicatorPaddingTop,indicatorPaddingRight,
+        mBottomIndicator.setPadding(indicatorPaddingLeft, indicatorPaddingTop, indicatorPaddingRight,
                 indicatorPaddingBottom);
         mBottomLayout.setGravity(mIndicatorGravity);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -212,7 +212,7 @@ public class BannerPagerView extends FrameLayout {
         } else {
             mBottomLayout.setBackgroundDrawable(bannerBottomBackground);
         }
-        setBannerPageTransformer(true,TransformerType.convert(transformerType));
+        setBannerPageTransformer(true, TransformerType.convert(transformerType));
         setEnableAutoPlay(enableAutoPlay);
 
         a.recycle();
@@ -224,69 +224,124 @@ public class BannerPagerView extends FrameLayout {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
-    public void setOnPageChangeListener(ViewPager.OnPageChangeListener listener){
-        mOnPageChangeListener = listener;
+    public void addOnPageChangeListener(ViewPager.OnPageChangeListener listener) {
+        if (mOnPageChangeListeners == null) {
+            mOnPageChangeListeners = new ArrayList<>();
+        }
+        mOnPageChangeListeners.add(listener);
+    }
+
+    public void removeOnPageChangeListener(ViewPager.OnPageChangeListener listener) {
+        if (mOnPageChangeListeners == null) return;
+        mOnPageChangeListeners.remove(listener);
+    }
+
+    private void dispatchOnPageScrolled(int position, float offset, int offsetPixels) {
+        if (mOnPageChangeListeners != null) {
+            for (int i = 0, z = mOnPageChangeListeners.size(); i < z; i++) {
+                ViewPager.OnPageChangeListener listener = mOnPageChangeListeners.get(i);
+                if (listener != null) {
+                    listener.onPageScrolled(position, offset, offsetPixels);
+                }
+            }
+        }
+    }
+
+    private void dispatchOnPageSelected(int position) {
+        if (mOnPageChangeListeners != null) {
+            for (int i = 0, z = mOnPageChangeListeners.size(); i < z; i++) {
+                ViewPager.OnPageChangeListener listener = mOnPageChangeListeners.get(i);
+                if (listener != null) {
+                    listener.onPageSelected(position);
+                }
+            }
+        }
+    }
+
+    private void dispatchOnScrollStateChanged(int state) {
+        if (mOnPageChangeListeners != null) {
+            for (int i = 0, z = mOnPageChangeListeners.size(); i < z; i++) {
+                ViewPager.OnPageChangeListener listener = mOnPageChangeListeners.get(i);
+                if (listener != null) {
+                    listener.onPageScrollStateChanged(state);
+                }
+            }
+        }
+    }
+
+    /**
+     * Set BannerPageTransformer type {@link BannerPagerView#setBannerPageTransformer(boolean, TransformerType)}
+     *
+     * @param transformerType PageTransformer that will modify each page's animation properties
+     * @see TransformerType
+     */
+    public void setBannerPageTransformer(TransformerType transformerType) {
+        setBannerPageTransformer(true, transformerType);
     }
 
     /**
      * Set BannerPageTransformer type {@link TransformerType}
+     *
      * @param reverseDrawingOrder true if the supplied PageTransformer requires page views
      *                            to be drawn from last to first instead of first to last.
-     * @param transformerType PageTransformer that will modify each page's animation properties
+     * @param transformerType     PageTransformer that will modify each page's animation properties
      */
-    public void setBannerPageTransformer(boolean reverseDrawingOrder,TransformerType transformerType){
-        setBannerPageTransformer(reverseDrawingOrder,PageTransformerFactory.createPageTransformer(transformerType));
+    public void setBannerPageTransformer(boolean reverseDrawingOrder, TransformerType transformerType) {
+        setBannerPageTransformer(reverseDrawingOrder, PageTransformerFactory.createPageTransformer(transformerType));
     }
 
     /**
      * Set a {@link ViewPager.PageTransformer} that will be called for each attached page whenever
      * the scroll position is changed. This allows the application to apply custom property
      * transformations to each page, overriding the default sliding look and feel.
-     *
+     * <p>
      * <p><em>Note:</em> Prior to Android 3.0 the property animation APIs did not exist.
      * As a result, setting a PageTransformer prior to Android 3.0 (API 11) will have no effect.</p>
+     *
      * @param reverseDrawingOrder true if the supplied PageTransformer requires page views
      *                            to be drawn from last to first instead of first to last.
-     * @param pageTransformer PageTransformer that will modify each page's animation properties
+     * @param pageTransformer     PageTransformer that will modify each page's animation properties
      */
-    public void setBannerPageTransformer(boolean reverseDrawingOrder,final ViewPager.PageTransformer pageTransformer){
+    public void setBannerPageTransformer(boolean reverseDrawingOrder, final ViewPager.PageTransformer pageTransformer) {
         if (pageTransformer == null) return;
         mViewPage.setPageTransformer(reverseDrawingOrder, new LoopViewPager.PageTransformer() {
             @Override
             public void transformPage(View page, float position) {
-                pageTransformer.transformPage(page,position);
+                pageTransformer.transformPage(page, position);
             }
         });
     }
 
-    public void setBannerScroller(Scroller scroller){
-        try{
+    public void setBannerScroller(Scroller scroller) {
+        try {
             Field scrollerField = LoopViewPager.class.getDeclaredField("mScroller");
             scrollerField.setAccessible(true);
-            scrollerField.set(mViewPage,scroller);
+            scrollerField.set(mViewPage, scroller);
             mBannerScroller = scroller;
-        }catch (Exception e){
-            Log.e(TAG,"Set ViewPager scroller fail",e);
+        } catch (Exception e) {
+            Log.e(TAG, "Set ViewPager scroller fail", e);
         }
     }
 
     /**
      * If the default scroller is used, it will be valid
+     *
      * @param duration Duration of the scroll in milliseconds.
      */
-    public void setBannerScrollerDuration(int duration){
-        if (mBannerScroller instanceof BannerScroller){
+    public void setBannerScrollerDuration(int duration) {
+        if (mBannerScroller instanceof BannerScroller) {
             ((BannerScroller) mBannerScroller).setDuration(duration);
         }
     }
 
     /**
      * This method only sets the animation interpolator, the internal use of BannerScroller
+     *
      * @param interpolator {@link Interpolator}
-     * @param duration Duration of the scroll in milliseconds.
+     * @param duration     Duration of the scroll in milliseconds.
      */
-    public void setBannerScrollerInterpolator(Interpolator interpolator,int duration){
-        BannerScroller scroller = new BannerScroller(getContext(),interpolator);
+    public void setBannerScrollerInterpolator(Interpolator interpolator, int duration) {
+        BannerScroller scroller = new BannerScroller(getContext(), interpolator);
         if (duration > 0)
             scroller.setDuration(duration);
         setBannerScroller(scroller);
@@ -296,30 +351,31 @@ public class BannerPagerView extends FrameLayout {
      * <p>设置Banner title view,title view的位置取决与indicator view的位置.
      * 如果indicator是在left,title会添加到right;反之,则添加到left.
      * 如果你需要一个title,则必须设置bannerIndicatorGravity属性</p>
+     *
      * @param bannerTitleView {@link BannerTitleView}
      */
-    public void setBannerTitleView(BannerTitleView bannerTitleView){
+    public void setBannerTitleView(BannerTitleView bannerTitleView) {
         mBannerTitleView = bannerTitleView;
         int layoutId = mBannerTitleView.getTitleLayoutId();
-        View titleView = LayoutInflater.from(getContext()).inflate(layoutId,mBottomLayout,false);
+        View titleView = LayoutInflater.from(getContext()).inflate(layoutId, mBottomLayout, false);
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) titleView.getLayoutParams();
         params.weight = 1;
         params.gravity = Gravity.CENTER_VERTICAL;
         bannerTitleView.onFinishInflater(titleView);
-        if (mIndicatorGravity == Gravity.LEFT){
+        if (mIndicatorGravity == Gravity.LEFT) {
             //indicator 如果是在left,则直接addView
             mBottomLayout.addView(titleView);
-        } else if (mIndicatorGravity == Gravity.RIGHT){
+        } else if (mIndicatorGravity == Gravity.RIGHT) {
             //indicator 如果是在right,就addView第一个index
-            mBottomLayout.addView(titleView,0);
+            mBottomLayout.addView(titleView, 0);
         }
     }
 
-    public void setBannerBottomVisibility(int visibility){
+    public void setBannerBottomVisibility(int visibility) {
         mBottomLayout.setVisibility(visibility);
     }
 
-    public void setBannerPagerAdapter(BannerPageViewAdapter bannerPageAdapter){
+    public void setBannerPagerAdapter(BannerPageViewAdapter bannerPageAdapter) {
         if (bannerPageAdapter == null) return;
         mBannerPageAdapter = bannerPageAdapter;
     }
@@ -337,8 +393,8 @@ public class BannerPagerView extends FrameLayout {
         super.onFinishInflate();
     }
 
-    public void setBanner(List<BannerItem> bannerItems){
-        if (bannerItems != null && bannerItems.size() > 0){
+    public void setBanner(List<BannerItem> bannerItems) {
+        if (bannerItems != null && bannerItems.size() > 0) {
             pauseAutoPlay();
             clearAllData();
             clearAllView();
@@ -350,14 +406,14 @@ public class BannerPagerView extends FrameLayout {
             indicator.setVisibility(View.VISIBLE);
             //之所以判断这个,是因为ViewPager是预加载,但是需要循环滚动,
             //so,在原有的数据项增加2倍,保证在后面的item不会加载失败.
-            if (bannerCount < MI_BANNER_COUNT){
+            if (bannerCount < MI_BANNER_COUNT) {
                 //banner 数量如果是1,那么就不让他循环.
                 //自动轮播也会停止.
-                if (bannerCount == 1){
+                if (bannerCount == 1) {
                     indicator.setVisibility(GONE);
                     mViewPage.setLoopEnable(false);
                 } else {
-                    bannerCount = 2*bannerCount;
+                    bannerCount = 2 * bannerCount;
                 }
             }
             mPageAdapter = new BannerPageAdapter();
@@ -372,55 +428,56 @@ public class BannerPagerView extends FrameLayout {
         }
     }
 
-    private void setBannerTitle(int position){
-        if (mBannerTitleView != null){
-            mBannerTitleView.setTitle(mBannerList.get(position).getBannerTitle(),position);
+    private void setBannerTitle(int position) {
+        if (mBannerTitleView != null) {
+            mBannerTitleView.setTitle(mBannerList.get(position).getBannerTitle(), position);
         }
     }
 
-    private void clearAllData(){
+    private void clearAllData() {
         mBannerList.clear();
     }
 
-    private void clearAllView(){
+    private void clearAllView() {
         mViewPage.removeAllViews();
         if (mPageAdapter != null) mPageAdapter.clearViewCache();
     }
 
     /**
      * set intervalTime.
+     *
      * @param intervalTime Play interval time
      */
-    public void setIntervalTime(long intervalTime){
+    public void setIntervalTime(long intervalTime) {
         this.mIntervalTime = intervalTime;
-        if (isEnableAutoPlay()){
+        if (isEnableAutoPlay()) {
             pauseAutoPlay();
             startAutoPlay();
         }
     }
 
-    public void setEnableAutoPlay(boolean enableAutoPlay){
-        setBannerFlags(enableAutoPlay ? AUTO_PLAY_ENABLE:AUTO_PLAY_DISABLE,AUTO_PLAY_MARK);
-        if (enableAutoPlay){
+    public void setEnableAutoPlay(boolean enableAutoPlay) {
+        setBannerFlags(enableAutoPlay ? AUTO_PLAY_ENABLE : AUTO_PLAY_DISABLE, AUTO_PLAY_MARK);
+        if (enableAutoPlay) {
             startAutoPlay();
         } else {
             pauseAutoPlay();
         }
     }
 
-    public boolean isEnableAutoPlay(){
+    public boolean isEnableAutoPlay() {
         return AUTO_PLAY_ENABLE == (mBannerFlags & AUTO_PLAY_MARK);
     }
 
-    private boolean isBannerLessThanOne(){
+    private boolean isBannerLessThanOne() {
         return mBannerList.size() <= 1;
     }
 
-    private boolean isBannerLoopRunning(){
+    private boolean isBannerLoopRunning() {
         return (mBannerFlags & STATE_RUNNING) == STATE_RUNNING;
     }
 
-    private void setBannerFlags(int flags, int mark){
+    private void setBannerFlags(int flags, int mark) {
         mBannerFlags = (mBannerFlags & ~mark) | (flags & mark);
     }
 
@@ -438,38 +495,41 @@ public class BannerPagerView extends FrameLayout {
         destroy();
     }
 
-    private void registerScreenReceiver(){
+    private void registerScreenReceiver() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
         intentFilter.addAction(Intent.ACTION_SCREEN_ON);
         getContext().registerReceiver(mScreenReceiver, intentFilter);
     }
 
-    public void pauseAutoPlay(){
-        setBannerFlags(STATE_STOP,STATE_MARK);
+    /**
+     * Pause polling banner play
+     * <p>If your page is not visible, it is recommended that you call this method to reduce unnecessary polling</p>
+     */
+    public void pauseAutoPlay() {
+        setBannerFlags(STATE_STOP, STATE_MARK);
         mBannerLooperHandler.removeMessages(LOOPER);
     }
 
     /**
-     * <p>停止轮询播放Banner</p>
-     * <p>该方法必须调用,请在页面销毁的时候调用该方法,以停止轮播</p>
+     * If Activity or Fragment is closed, you need to call this method, timely clear memory
      */
-    public void destroy(){
+    public void destroy() {
         pauseAutoPlay();
         clearAllData();
         clearAllView();
     }
 
     /**
-     * 开始轮询播放Banner
+     * Start polling play banner
      */
-    public void startAutoPlay(){
+    public void startAutoPlay() {
         if (!isEnableAutoPlay()) return;
         if (isBannerLoopRunning()) return;
         if (isBannerLessThanOne()) return;
-        if(mPageAdapter == null) return;
-        setBannerFlags(STATE_RUNNING,STATE_MARK);
-        mBannerLooperHandler.sendEmptyMessageDelayed(LOOPER,mIntervalTime);
+        if (mPageAdapter == null) return;
+        setBannerFlags(STATE_RUNNING, STATE_MARK);
+        mBannerLooperHandler.sendEmptyMessageDelayed(LOOPER, mIntervalTime);
     }
 
     @Override
@@ -480,7 +540,7 @@ public class BannerPagerView extends FrameLayout {
                 mLastMotionY = ev.getY();
                 mActivePointerId = MotionEventCompat.getPointerId(ev, 0);
                 pauseAutoPlay();
-                Log.i(TAG,"Pause carousel.");
+                Log.i(TAG, "Pause carousel.");
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (isBannerLessThanOne()) break;
@@ -496,10 +556,11 @@ public class BannerPagerView extends FrameLayout {
                 final float xDiff = Math.abs(dx);
                 final float y = MotionEventCompat.getY(ev, pointerIndex);
                 final float yDiff = Math.abs(y - mLastMotionY);
-                if (BuildConfig.DEBUG) Log.v(TAG, "Moved x to " + x + "," + y + " diff=" + xDiff + "," + yDiff);
+                if (BuildConfig.DEBUG)
+                    Log.v(TAG, "Moved x to " + x + "," + y + " diff=" + xDiff + "," + yDiff);
                 if (xDiff > mTouchSlop && xDiff * 0.5f > yDiff) {
                     ViewParent parent = getParent();
-                    if (parent != null){
+                    if (parent != null) {
                         parent.requestDisallowInterceptTouchEvent(true);
                     }
                 }
@@ -507,7 +568,7 @@ public class BannerPagerView extends FrameLayout {
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
                 startAutoPlay();
-                Log.i(TAG,"Resume carousel");
+                Log.i(TAG, "Resume carousel");
                 break;
             default:
                 break;
@@ -515,32 +576,26 @@ public class BannerPagerView extends FrameLayout {
         return super.onInterceptTouchEvent(ev);
     }
 
-    private class BannerPageListener implements LoopViewPager.OnPageChangeListener{
+    private class BannerPageListener implements LoopViewPager.OnPageChangeListener {
 
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            if (mOnPageChangeListener != null){
-                mOnPageChangeListener.onPageScrolled(realPosition(position),positionOffset,positionOffsetPixels);
-            }
+            dispatchOnPageScrolled(position, positionOffset, positionOffsetPixels);
         }
 
         @Override
         public void onPageSelected(int position) {
             position = realPosition(position);
-            if (mOnPageChangeListener != null){
-                mOnPageChangeListener.onPageSelected(position);
-            }
+            dispatchOnPageSelected(position);
             setBannerTitle(position);
         }
 
         @Override
         public void onPageScrollStateChanged(int state) {
-            if(state == ViewPager.SCROLL_STATE_IDLE){
+            if (state == ViewPager.SCROLL_STATE_IDLE) {
                 startAutoPlay();
             }
-            if (mOnPageChangeListener != null){
-                mOnPageChangeListener.onPageScrollStateChanged(state);
-            }
+            dispatchOnScrollStateChanged(state);
         }
     }
 
@@ -548,15 +603,15 @@ public class BannerPagerView extends FrameLayout {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if(Intent.ACTION_SCREEN_OFF.equals(action)){
+            if (Intent.ACTION_SCREEN_OFF.equals(action)) {
                 pauseAutoPlay();
-            } else if (Intent.ACTION_SCREEN_ON.equals(action)){
+            } else if (Intent.ACTION_SCREEN_ON.equals(action)) {
                 startAutoPlay();
             }
         }
     };
 
-    private int realPosition(int position){
+    private int realPosition(int position) {
         return position % mBannerList.size();
     }
 
@@ -575,40 +630,33 @@ public class BannerPagerView extends FrameLayout {
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            Log.i(TAG,"destroyItem item position:"+position);
-            if (object instanceof View){
+            Log.i(TAG, "destroyItem item position:" + position);
+            if (object instanceof View) {
                 View bannerView = (View) object;
                 container.removeView(bannerView);
                 int realPosition = position % mBannerList.size();
-                mBannerPageAdapter.destroyPageView(bannerView,realPosition);
+                mBannerPageAdapter.destroyPageView(bannerView, realPosition);
             }
         }
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             View bannerView = null;
-            Log.i(TAG,"instantiateItem item position:"+position);
-            if(position >= 0 && position <= getCount()-1){
+            Log.i(TAG, "instantiateItem item position:" + position);
+            if (position >= 0 && position <= getCount() - 1) {
                 int realPosition = realPosition(position);
                 BannerItem bannerItem = mBannerList.get(realPosition);
-                bannerView = mBannerViewCache.get(position);
-                if (bannerView == null){
-                    bannerView = mBannerPageAdapter.createPageView(getContext(),bannerItem,realPosition);
-                    bannerView.setTag(bannerItem);
-                    bannerView.setOnClickListener(mBannerClickListener);
-                    mBannerViewCache.put(realPosition,bannerView);
-                }
-                if (bannerView.getParent() != null){
-                    ViewGroup viewGroup = (ViewGroup)bannerView.getParent();
-                    viewGroup.removeView(bannerView);
-                }
+                bannerView = mBannerPageAdapter.createPageView(getContext(),bannerItem,realPosition);
+                bannerView.setTag(bannerItem);
+                bannerView.setOnClickListener(mBannerClickListener);
                 try {
                     container.addView(bannerView);
-                } catch (Exception e){
-                    Log.e(TAG,"Banner view already exists parent",e);
+                } catch (Exception e) {
+                    Log.e(TAG, "Banner view already exists parent", e);
                 }
-                mBannerPageAdapter.finishInstantiateItem(bannerView,bannerItem,realPosition);
-                if (mImageLoader != null) mImageLoader.displayBannerImage(getContext(),bannerView,bannerItem);
+                mBannerPageAdapter.finishInstantiateItem(bannerView, bannerItem, realPosition);
+                if (mImageLoader != null)
+                    mImageLoader.displayBannerImage(getContext(), bannerView, bannerItem);
             }
             return bannerView;
         }
@@ -618,7 +666,7 @@ public class BannerPagerView extends FrameLayout {
             return view == object;
         }
 
-        private void clearViewCache(){
+        private void clearViewCache() {
             mBannerViewCache.clear();
         }
     }
