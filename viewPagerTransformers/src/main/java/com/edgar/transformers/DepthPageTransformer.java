@@ -22,6 +22,7 @@ import com.nineoldandroids.view.ViewHelper;
 
 /**
  * Created by Edgar on 2016/12/14.
+ * 感谢https://github.com/daimajia/AndroidImageSlider
  */
 public class DepthPageTransformer extends BaseTransformer {
     private static final float MIN_SCALE = 0.75f;

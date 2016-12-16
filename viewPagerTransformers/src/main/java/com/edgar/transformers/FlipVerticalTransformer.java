@@ -18,6 +18,8 @@ package com.edgar.transformers;
 
 import android.view.View;
 
+import com.nineoldandroids.view.ViewHelper;
+
 /**
  * Created by Edgar on 2016/12/16.
  */
@@ -26,16 +28,15 @@ public class FlipVerticalTransformer extends BaseTransformer {
     protected void onTransform(View view, float position) {
         final float rotation = -180f * position;
 
-        view.setAlpha(rotation > 90f || rotation < -90f ? 0f : 1f);
-        view.setPivotX(view.getWidth() * 0.5f);
-        view.setPivotY(view.getHeight() * 0.5f);
-        view.setRotationX(rotation);
+        ViewHelper.setAlpha(view,rotation > 90f || rotation < -90f ? 0f : 1f);
+        ViewHelper.setPivotX(view,view.getWidth() * 0.5f);
+        ViewHelper.setPivotY(view,view.getHeight() * 0.5f);
+        ViewHelper.setRotationX(view,rotation);
     }
 
     @Override
     protected void onPostTransform(View page, float position) {
         super.onPostTransform(page, position);
-
         if (position > -0.5f && position < 0.5f) {
             page.setVisibility(View.VISIBLE);
         } else {

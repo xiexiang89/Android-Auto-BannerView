@@ -22,7 +22,8 @@ import com.nineoldandroids.view.ViewHelper;
 
 /**
  * Created by Edgar on 2016/12/14.
- * 缩放
+ * <p>缩放</p>
+ * 感谢https://github.com/daimajia/AndroidImageSlider
  */
 public class ZoomOutTransformer extends BaseTransformer {
 

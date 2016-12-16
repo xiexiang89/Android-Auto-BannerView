@@ -23,7 +23,6 @@ import com.nineoldandroids.view.ViewHelper;
 /**
  * Created by Edgar on 2016/12/16.
  */
-
 public class CubeOutTransformer extends BaseTransformer {
     @Override
     protected void onTransform(View page, float position) {

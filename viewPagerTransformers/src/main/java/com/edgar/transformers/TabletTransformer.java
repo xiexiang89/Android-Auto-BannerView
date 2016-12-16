@@ -24,6 +24,7 @@ import com.nineoldandroids.view.ViewHelper;
 
 /**
  * Created by Edgar on 2016/12/15.
+ * 感谢https://github.com/daimajia/AndroidImageSlider
  */
 public class TabletTransformer extends BaseTransformer{
 

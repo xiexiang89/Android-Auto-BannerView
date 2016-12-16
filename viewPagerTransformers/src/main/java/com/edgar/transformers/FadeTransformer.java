@@ -16,13 +16,13 @@
 
 package com.edgar.transformers;
 
-import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.nineoldandroids.view.ViewHelper;
 
 /**
  * Created by Edgar on 2016/12/15.
+ * 感谢https://github.com/daimajia/AndroidImageSlider
  */
 public class FadeTransformer extends BaseTransformer {
     @Override

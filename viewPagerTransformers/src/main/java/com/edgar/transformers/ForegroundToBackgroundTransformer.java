@@ -22,8 +22,8 @@ import com.nineoldandroids.view.ViewHelper;
 
 /**
  * Created by Edgar on 2016/12/16.
+ * 感谢https://github.com/daimajia/AndroidImageSlider
  */
-
 public class ForegroundToBackgroundTransformer extends BaseTransformer {
     @Override
     protected void onTransform(View view, float position) {
