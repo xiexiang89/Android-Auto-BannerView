@@ -85,7 +85,7 @@ public abstract class BaseBannerPageActivity extends AppCompatActivity {
         });
         // 取屏幕尺寸的1/3
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        int bannerHeight = displayMetrics.heightPixels / 4;
+        int bannerHeight = displayMetrics.heightPixels / 3;
         mBannerPagerView.getLayoutParams().height = bannerHeight;
         mBannerPagerView.setBannerTitleView(new CustomBannerTitleView());
         mBannerPagerView.setBanner(BANNER_ITEMS);

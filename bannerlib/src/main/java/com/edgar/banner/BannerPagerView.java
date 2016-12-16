@@ -211,7 +211,6 @@ public class BannerPagerView extends FrameLayout {
         } else {
             mBottomLayout.setBackgroundDrawable(bannerBottomBackground);
         }
-        setBannerPageTransformer(false,TransformerType.ZoomOutSlide);
         setEnableAutoPlay(enableAutoPlay);
 
         a.recycle();
@@ -595,7 +594,7 @@ public class BannerPagerView extends FrameLayout {
                     bannerView = mBannerPageAdapter.createPageView(getContext(),bannerItem,realPosition);
                     bannerView.setTag(bannerItem);
                     bannerView.setOnClickListener(mBannerClickListener);
-//                    mBannerViewCache.put(position,bannerView);
+                    mBannerViewCache.put(realPosition,bannerView);
                 }
                 if (bannerView.getParent() != null){
                     ViewGroup viewGroup = (ViewGroup)bannerView.getParent();

@@ -26,10 +26,6 @@ import com.nineoldandroids.view.ViewHelper;
 public class StackTransformer extends BaseTransformer {
 
     @Override
-    protected void onPreTransform(View page, float position) {
-    }
-
-    @Override
     protected void onTransform(View page, float position) {
         ViewHelper.setTranslationX(page,position < 0 ? 0f : -page.getWidth() * position);
     }

@@ -30,6 +30,7 @@ import com.edgar.transformers.TransformerType;
 import com.facebook.drawee.backends.pipeline.Fresco;
 
 import banner.edgar.com.banner.FrescoBannerPageView;
+import banner.edgar.com.banner.PicassoImageLoader;
 import banner.edgar.com.banner.R;
 
 /**
@@ -51,7 +52,7 @@ public class BannerTransformersActivity extends BaseBannerPageActivity {
         mTransformerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                mBannerPagerView.setBannerPageTransformer(false,mTransformerAdapter.getItem(position));
+                mBannerPagerView.setBannerPageTransformer(true,mTransformerAdapter.getItem(position));
             }
         });
     }
