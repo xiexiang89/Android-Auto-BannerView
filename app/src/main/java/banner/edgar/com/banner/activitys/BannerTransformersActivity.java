@@ -71,4 +71,16 @@ public class BannerTransformersActivity extends BaseBannerPageActivity {
     protected int getLayoutId() {
         return R.layout.banner_transformer;
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mBannerPagerView.startAutoPlay();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mBannerPagerView.pauseAutoPlay();
+    }
 }

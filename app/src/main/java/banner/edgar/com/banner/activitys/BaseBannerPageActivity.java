@@ -54,7 +54,7 @@ public abstract class BaseBannerPageActivity extends AppCompatActivity {
         addBannerItems(createBanner("90后特警美女教官走红：教男队员打枪格斗",
                 "http://n.sinaimg.cn/mil/20161205/csIL-fxyiayr9137844.jpg"));
         addBannerItems(createBanner("空中弹药库！F-15与中国版苏30实战挂载对比",
-                "http://n.sinaimg.cn/mil/20161205/hMHP-fxyipxf7621257.jpg"));
+                "http://img3.duitang.com/uploads/item/201212/19/20121219172711_y5Pk5.thumb.700_0.jpeg"));
         addBannerItems(createBanner("红豆词-忘不了新愁与旧愁",
                 "http://p4.music.126.net/DXi1EXNhX1cfjiVUn3HtpA==/18651015743458158.jpg"));
     }
