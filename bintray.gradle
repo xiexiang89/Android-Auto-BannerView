@@ -20,7 +20,7 @@ version = VERSION
 
 def siteUrl = 'https://git.oschina.net/DeWork.com/Banner'
 def gitUrl = 'git@git.oschina.net:DeWork.com/Banner.git'
-group = "com.edgar.android" // Maven Group ID for the artifact
+group = "com.easy.android" // Maven Group ID for the artifact
 install {
     repositories.mavenInstaller {
 
