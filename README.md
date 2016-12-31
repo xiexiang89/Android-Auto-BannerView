@@ -35,14 +35,6 @@ banner的属性:
         app:enableAutoPlayer="true"               //是否开启自动轮播。
 ```
 gradle中使用:
-抱歉，因为该项目一直未添加到公用仓库，maven引用如下
-请在你的module下的gradle.build文件中添加以下代码:
-repositories {
-    maven {
-        url 'https://dl.bintray.com/edgar/maven/'
-    }
-}
-
 dependencies{
-    compile 'com.edgar.android:bannerlib:1.0.3'
+    compile 'com.easy.android:bannerlib:1.0.7'
 }
