@@ -109,6 +109,7 @@ public class BannerPagerView extends FrameLayout {
     private ImageLoader mImageLoader;
     private BannerTitleView mBannerTitleView;
     private Scroller mBannerScroller;
+    private Field mScrollerField;
     private List<ViewPager.OnPageChangeListener> mOnPageChangeListeners;
 
     private OnBannerClickListener mOnBannerClickListener;
@@ -314,9 +315,12 @@ public class BannerPagerView extends FrameLayout {
 
     public void setBannerScroller(Scroller scroller) {
         try {
-            Field scrollerField = LoopViewPager.class.getDeclaredField("mScroller");
-            scrollerField.setAccessible(true);
-            scrollerField.set(mViewPage, scroller);
+            //只获取一次字段
+            if (mScrollerField == null){
+                mScrollerField = LoopViewPager.class.getDeclaredField("mScroller");
+                mScrollerField.setAccessible(true);
+            }
+            mScrollerField.set(mViewPage, scroller);
             mBannerScroller = scroller;
         } catch (Exception e) {
             Log.e(TAG, "Set ViewPager scroller fail", e);
@@ -631,11 +635,13 @@ public class BannerPagerView extends FrameLayout {
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             Log.i(TAG, "destroyItem item position:" + position);
-            if (object instanceof View) {
-                View bannerView = (View) object;
-                container.removeView(bannerView);
-                int realPosition = position % mBannerList.size();
-                mBannerPageAdapter.destroyPageView(bannerView, realPosition);
+            if (position >= 0 && position <= getCount() - 1){
+                if (object instanceof View) {
+                    View bannerView = (View) object;
+                    container.removeView(bannerView);
+                    int realPosition = position % mBannerList.size();
+                    mBannerPageAdapter.destroyPageView(bannerView, realPosition);
+                }
             }
         }
 
@@ -646,17 +652,25 @@ public class BannerPagerView extends FrameLayout {
             if (position >= 0 && position <= getCount() - 1) {
                 int realPosition = realPosition(position);
                 BannerItem bannerItem = mBannerList.get(realPosition);
-                bannerView = mBannerPageAdapter.createPageView(getContext(),bannerItem,realPosition);
-                bannerView.setTag(bannerItem);
-                bannerView.setOnClickListener(mBannerClickListener);
+                bannerView = mBannerViewCache.get(position);
+                if (bannerView == null){
+                    bannerView = mBannerPageAdapter.createPageView(getContext(),bannerItem,realPosition);
+                    bannerView.setTag(bannerItem);
+                    bannerView.setOnClickListener(mBannerClickListener);
+                    mBannerViewCache.put(position,bannerView);
+                }
+                boolean addSuccess = false;
                 try {
                     container.addView(bannerView);
+                    addSuccess = true;
                 } catch (Exception e) {
                     Log.e(TAG, "Banner view already exists parent", e);
                 }
-                mBannerPageAdapter.finishInstantiateItem(bannerView, bannerItem, realPosition);
-                if (mImageLoader != null)
-                    mImageLoader.displayBannerImage(getContext(), bannerView, bannerItem);
+                if (addSuccess){
+                    mBannerPageAdapter.finishInstantiateItem(bannerView, bannerItem, realPosition);
+                    if (mImageLoader != null)
+                        mImageLoader.displayBannerImage(getContext(), bannerView, bannerItem);
+                }
             }
             return bannerView;
         }
