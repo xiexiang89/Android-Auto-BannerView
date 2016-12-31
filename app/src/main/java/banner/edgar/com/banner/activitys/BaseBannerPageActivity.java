@@ -91,6 +91,18 @@ public abstract class BaseBannerPageActivity extends AppCompatActivity {
         mBannerPagerView.setBanner(BANNER_ITEMS);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mBannerPagerView.pauseAutoPlay();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mBannerPagerView.startAutoPlay();
+    }
+
     protected abstract ImageLoader getBannerImageLoader();
 
     protected abstract BannerPageViewAdapter getBannerPageViewAdapter();

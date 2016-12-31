@@ -427,7 +427,7 @@ public class LoopViewPager extends ViewGroup {
             mAdapter.startUpdate(this);
             for (int i = 0; i < mItems.size(); i++) {
                 final ItemInfo ii = mItems.get(i);
-                mAdapter.destroyItem(this, ii.position, ii.object);
+                mAdapter.destroyItem(this, getLoopPagerPosition(ii.position), ii.object);
             }
             mAdapter.finishUpdate(this);
             mItems.clear();
@@ -1054,7 +1054,7 @@ public class LoopViewPager extends ViewGroup {
                     }
                     if (pos == ii.index && !ii.scrolling) {
                         mItems.remove(itemIndex);
-                        mAdapter.destroyItem(this, ii.position, ii.object);
+                        mAdapter.destroyItem(this, getLoopPagerPosition(ii.position), ii.object);
                         itemIndex--;
                         curIndex--;
                         ii = itemIndex >= 0 ? mItems.get(itemIndex) : null;
@@ -1088,7 +1088,7 @@ public class LoopViewPager extends ViewGroup {
                         }
                         if (pos == ii.index && !ii.scrolling) {
                             mItems.remove(itemIndex);
-                            mAdapter.destroyItem(this, ii.position, ii.object);
+                            mAdapter.destroyItem(this, getLoopPagerPosition(ii.position), ii.object);
                             ii = itemIndex < mItems.size() ? mItems.get(itemIndex) : null;
                         }
                     } else if (ii != null && pos == ii.index) {
