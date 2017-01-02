@@ -103,6 +103,12 @@ public abstract class BaseBannerPageActivity extends AppCompatActivity {
         mBannerPagerView.startAutoPlay();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mBannerPagerView.destroy();
+    }
+
     protected abstract ImageLoader getBannerImageLoader();
 
     protected abstract BannerPageViewAdapter getBannerPageViewAdapter();
