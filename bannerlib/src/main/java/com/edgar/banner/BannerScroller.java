@@ -24,7 +24,7 @@ import android.widget.Scroller;
  * Created by Edgar on 2016/11/29.
  */
 class BannerScroller extends Scroller {
-    private int mDuration = 1000;
+    private int mDuration = 1200;
 
     BannerScroller(Context context) {
         super(context);

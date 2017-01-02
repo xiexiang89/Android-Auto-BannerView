@@ -505,6 +505,7 @@ public class BannerPagerView extends FrameLayout {
      * Start polling play banner
      */
     public void startAutoPlay() {
+        if (isEnableAutoPlay()) return;
         if (isBannerLessThanOne()) return;
         if (mPageAdapter == null) return;
         Log.i(TAG,"Start auto play banner");
@@ -522,7 +523,7 @@ public class BannerPagerView extends FrameLayout {
         //检查用户是否启用自动播放
         mTouchDown = false;
         if (isEnableAutoPlay()){
-            startAutoPlay();
+            mBannerLooperHandler.sendEmptyMessageDelayed(LOOPER, mIntervalTime);
             Log.i(TAG,"Touch up resume auto play.");
         }
     }
