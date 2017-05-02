@@ -32,7 +32,6 @@ import com.edgar.banner.ImageLoader;
 import java.util.ArrayList;
 import java.util.List;
 
-import banner.edgar.com.banner.CustomBannerTitleView;
 import banner.edgar.com.banner.R;
 import banner.edgar.com.banner.ToastUtils;
 
@@ -87,7 +86,7 @@ public abstract class BaseBannerPageActivity extends AppCompatActivity {
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         int bannerHeight = displayMetrics.heightPixels / 3;
         mBannerPagerView.getLayoutParams().height = bannerHeight;
-        mBannerPagerView.setBannerTitleView(new CustomBannerTitleView());
+//        mBannerPagerView.setBannerTitleView(new CustomBannerTitleView());
         mBannerPagerView.setBanner(BANNER_ITEMS);
     }
 

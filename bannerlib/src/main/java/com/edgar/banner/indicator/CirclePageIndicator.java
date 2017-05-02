@@ -392,19 +392,19 @@ public class CirclePageIndicator extends View implements PageIndicator {
         invalidate();
     }
 
-    @Override
-    public void setViewPager(LoopViewPager view, int initialPosition) {
-        setViewPager(view);
-        setCurrentItem(initialPosition);
-    }
+//    @Override
+//    public void setViewPager(LoopViewPager view, int initialPosition) {
+//        setViewPager(view);
+//        setCurrentItem(initialPosition);
+//    }
 
-    @Override
-    public void setCurrentItem(int item) {
+//    @Override
+    private void setCurrentItem(int item) {
         setCurrentItem(item,false);
     }
 
-    @Override
-    public void setCurrentItem(int item, boolean smoothScroll) {
+//    @Override
+    private void setCurrentItem(int item, boolean smoothScroll) {
         if (mViewPager == null) {
             throw new IllegalStateException("ViewPager has not been bound.");
         }
@@ -414,10 +414,10 @@ public class CirclePageIndicator extends View implements PageIndicator {
         invalidate();
     }
 
-    @Override
-    public void notifyDataSetChanged() {
-        invalidate();
-    }
+//    @Override
+//    public void notifyDataSetChanged() {
+//        invalidate();
+//    }
 
     @Override
     public void onPageScrollStateChanged(int state) {
@@ -453,13 +453,13 @@ public class CirclePageIndicator extends View implements PageIndicator {
         }
     }
 
-    @Override
-    public void setOnPageChangeListener(LoopViewPager.OnPageChangeListener listener) {
-        mListener = listener;
-    }
+//    @Override
+//    public void setOnPageChangeListener(LoopViewPager.OnPageChangeListener listener) {
+//        mListener = listener;
+//    }
 
     @Override
-    public void setPageCount(int pageCount) {
+    public void onPageUpdate(int pageCount) {
         mPageCount = pageCount;
         invalidate();
     }

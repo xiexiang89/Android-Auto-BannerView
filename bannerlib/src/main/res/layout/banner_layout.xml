@@ -8,15 +8,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
     <LinearLayout
+        android:orientation="horizontal"
         android:id="@+id/bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_gravity="bottom">
+        <TextView
+            android:id="@+id/banner_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="7dp"
+            android:textSize="15dp"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:textColor="@android:color/white"/>
         <com.edgar.banner.indicator.CirclePageIndicator
             android:id="@+id/indicator_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
+            android:layout_gravity="right"/>
     </LinearLayout>
 </merge>

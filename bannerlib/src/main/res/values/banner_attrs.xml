@@ -17,14 +17,18 @@
 
 <resources>
     <declare-styleable name="BannerPagerView">
-        <attr name="bannerIndicatorSelectorRadius" format="dimension|reference"/>
-        <attr name="bannerIndicatorNormalRadius" format="dimension|reference"/>
-        <attr name="bannerIndicatorSelectorColor" format="dimension|color"/>
-        <attr name="bannerIndicatorNormalColor" format="dimension|color"/>
-        <attr name="bannerIndicatorStrokeWidth" format="dimension|reference"/>
-        <attr name="bannerIndicatorStrokeColor" format="dimension|color"/>
+        <!-- 加载自定义布局 -->
+        <attr name="bannerIndicatorLayout" format="reference"/>
+        <!--<attr name="bannerIndicatorSelectorRadius" format="dimension|reference"/>-->
+        <!--<attr name="bannerIndicatorNormalRadius" format="dimension|reference"/>-->
+        <!--<attr name="bannerIndicatorSelectorColor" format="dimension|color"/>-->
+        <!--<attr name="bannerIndicatorNormalColor" format="dimension|color"/>-->
+        <!--<attr name="bannerIndicatorStrokeWidth" format="dimension|reference"/>-->
+        <!--<attr name="bannerIndicatorStrokeColor" format="dimension|color"/>-->
         <attr name="enableAutoPlayer" format="boolean|reference"/>
-        <attr name="bannerBottomBackground" format="reference|color"/>
+        <!--<attr name="bannerBottomBackground" format="reference|color"/>-->
+        <!--<attr name="bannerTitleTextColor" format="reference|color"/>-->
+        <!--<attr name="bannerTitleTextSize" format="reference|dimension"/>-->
         <attr name="bannerIndicatorGravity" format="enum">
             <enum name="left" value="3"/>
             <enum name="right" value="5"/>
@@ -49,9 +53,9 @@
             <enum name="ZoomOutSlide" value="16"/>
             <enum name="ZoomOut" value="17"/>
         </attr>
-        <attr name="indicatorPaddingLeft" format="dimension|reference"/>
-        <attr name="indicatorPaddingRight" format="dimension|reference"/>
-        <attr name="indicatorPaddingBottom" format="dimension|reference"/>
-        <attr name="indicatorPaddingTop" format="dimension|reference"/>
+        <!--<attr name="indicatorPaddingLeft" format="dimension|reference"/>-->
+        <!--<attr name="indicatorPaddingRight" format="dimension|reference"/>-->
+        <!--<attr name="indicatorPaddingBottom" format="dimension|reference"/>-->
+        <!--<attr name="indicatorPaddingTop" format="dimension|reference"/>-->
     </declare-styleable>
 </resources>

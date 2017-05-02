@@ -24,15 +24,6 @@
         android:id="@+id/banner_pager"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        app:bannerIndicatorNormalColor="@android:color/white"
-        app:bannerIndicatorSelectorColor="#04c05a"
-        app:bannerIndicatorNormalRadius="1.5dp"
-        app:bannerIndicatorSelectorRadius="2dp"
-        app:bannerIndicatorStrokeColor="@android:color/transparent"
-        app:bannerBottomBackground="#850d0d0d"
-        app:indicatorPaddingBottom="10dp"
-        app:indicatorPaddingTop="10dp"
-        app:bannerIndicatorGravity="right"
         app:enableAutoPlayer="true"
         app:bannerAnimation="Accordion"/>
     <ListView

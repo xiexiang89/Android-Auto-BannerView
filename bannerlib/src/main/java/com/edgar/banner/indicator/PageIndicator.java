@@ -24,50 +24,52 @@ import com.edgar.banner.LoopViewPager;
  * number and the current visible view.
  */
 public interface PageIndicator extends LoopViewPager.OnPageChangeListener {
+
+    void onPageUpdate(int pageCount);
     /**
      * Bind the indicator to a ViewPager.
      * @param view Should ViewPager
      */
     void setViewPager(LoopViewPager view);
 
-    /**
-     * Bind the indicator to a ViewPager.
-     * @param view Should viewpager
-     * @param initialPosition Initial position
-     */
-    void setViewPager(LoopViewPager view, int initialPosition);
+//    /**
+//     * Bind the indicator to a ViewPager.
+//     * @param view Should viewpager
+//     * @param initialPosition Initial position
+//     */
+//    void setViewPager(LoopViewPager view, int initialPosition);
+//
+//    /**
+//     * <p>Set the current page of both the ViewPager and indicator.</p>
+//     *
+//     * <p>This <strong>must</strong> be used if you need to set the page before
+//     * the views are drawn on screen (e.g., default start page).</p>
+//     * @param item Item index to select
+//     */
+//    void setCurrentItem(int item);
+//
+//    /**
+//     * Set the currently selected page.
+//     *
+//     * @param item Item index to select
+//     * @param smoothScroll True to smoothly scroll to the new item, false to transition immediately
+//     */
+//    void setCurrentItem(int item, boolean smoothScroll);
+//
+//    /**
+//     * Set a page change listener which will receive forwarded events.
+//     * @param listener Listener to set
+//     */
+//    void setOnPageChangeListener(LoopViewPager.OnPageChangeListener listener);
 
-    /**
-     * <p>Set the current page of both the ViewPager and indicator.</p>
-     *
-     * <p>This <strong>must</strong> be used if you need to set the page before
-     * the views are drawn on screen (e.g., default start page).</p>
-     * @param item Item index to select
-     */
-    void setCurrentItem(int item);
-
-    /**
-     * Set the currently selected page.
-     *
-     * @param item Item index to select
-     * @param smoothScroll True to smoothly scroll to the new item, false to transition immediately
-     */
-    void setCurrentItem(int item, boolean smoothScroll);
-
-    /**
-     * Set a page change listener which will receive forwarded events.
-     * @param listener Listener to set
-     */
-    void setOnPageChangeListener(LoopViewPager.OnPageChangeListener listener);
-
-    /**
-     * Set page count
-     * @param pageCount Page count
-     */
-    void setPageCount(int pageCount);
+//    /**
+//     * Set page count
+//     * @param pageCount Page count
+//     */
+//    void setPageCount(int pageCount);
 
     /**
      * Notify the indicator that the fragment list has changed.
      */
-    void notifyDataSetChanged();
+//    void notifyDataSetChanged();
 }

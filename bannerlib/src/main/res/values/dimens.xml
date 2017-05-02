@@ -1,3 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="point_size">5dp</dimen>
+    <dimen name="indicator_hor_padding">8dp</dimen>
+    <dimen name="indicator_ver_padding">10dp</dimen>
+    <dimen name="point_margin">8dp</dimen>
 </resources>
