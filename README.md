@@ -1,39 +1,25 @@
 #Banner
 Android平台的轮播控件,使用方便,可以任意使用一种图片加载;
 ImageLoader: 主要是负责Banner图片加载,内部没有任何实现,开发需要实现它来调用图片加载库加载Banner图;
-IBannerPagerView: 负责自定义BannerView, 如果没有自定义，内部有一个默认的实现,默认是只创建ImageView，Banner标题暂未实现;
+BannerIndicator: 对指示器和标题做一层抽象,使用者可以自定义indicator,也可以不用indicator.
 
-使用方式:
-```
-xml布局:
-    <com.edgar.banner.BannerPagerView
-        android:id="@+id/banner_pager"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+XML属性:
+bannerIndicatorLayout: 自定义indicator布局,必须实现BannerIndicator接口,否则会报参数异常
+indicatorStyle,indicator基本样式 
+     1.None: 无indicator, 
+     2.circle_indicator:圆点指示器
+     3.title_indicator：标题指示器
+     4.circle_title_indicator：圆点加标题指示器
+enableAutoPlayer:是否启用自动播放,不设置，默认不自动播放
+pointPadding: 指示器间边距
+unSelectDrawable:指示器未选中的图
+selectedDrawable：指示器选中的图
+indicatorGravity:指示器位置,
+  1.left:左对齐
+  2.right：右对齐
+  3.center：居中
+bannerAnimation: banner动画
 
-Java代码:
-构建BannerItem对象:
-   BannerItem banner = new  BannerItem().title("Banner2").url("http://img0.imgtn.bdimg.com/it/u=2425082484,2187620716&fm=11&gp=0.jpg")
-List<BannerItem> banners = new ArrayList<BannerItem>();
-banners.add(banner);
-
-BannerPagerView bannerPagerView = (BannerPagerView) findViewById(R.id.banner_pager);
-bannerPagerView.setBannerPagerView(new CustomBannerPagerView()); //自定义BannerItemView
-bannerPagerView.setImageLoader(new PicassoImageLoader()); //设置一个ImageLoader,用于加载图片
-bannerPagerView.setBanner(banners);
-
-banner的属性:
-        app:bannerIndicatorNormalColor="@android:color/white"    //设置指示条圆点的默认颜色
-        app:bannerIndicatorSelectorColor="#04c05a"   //设置指示条圆点的选择颜色
-        app:bannerIndicatorNormalRadius="1.5dp"      //设置指示条圆点的默认半径大小
-        app:bannerIndicatorSelectorRadius="2dp"      //设置指示条圆点的选择半径大小
-        app:bannerIndicatorStrokeColor="@android:color/transparent"  //设置指示条的描边，如果bannerIndicatorNormalColor属性设置为透明，建议设置下该属性，体验会更加。只作用在默认的时候。
-        app:bannerBottomBackground="#850d0d0d"    //banner底部有个指示条，设置指示条的背景
-        app:indicatorPaddingBottom="10dp"         //指示条的底部边距，可以调整高度。
-        app:indicatorPaddingTop="10dp"            //指示条的顶部边距，可以调整高度
-        app:bannerIndicatorGravity="right"        //指示条的位置，如果该属性设置为center，那么banner title将不起作用
-        app:enableAutoPlayer="true"               //是否开启自动轮播。
-```
 gradle中使用:
 dependencies{
     compile 'com.easy.android:bannerlib:1.0.7'
