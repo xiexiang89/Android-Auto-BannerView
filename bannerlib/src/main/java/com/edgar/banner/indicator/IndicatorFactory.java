@@ -30,6 +30,8 @@ public final class IndicatorFactory {
             return new CircleIndicator(context);
         } else if (indicatorStyle == IndicatorStyle.CIRCLE_TITLE_INDICATOR){
             return new CircleTitleIndicator(context);
+        } else if (indicatorStyle == IndicatorStyle.TITLE_INDICATOR){
+            return new TitleIndicator(context);
         } else {
             return null;
         }

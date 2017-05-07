@@ -72,7 +72,6 @@ public class BannerPagerView extends FrameLayout {
     private static final String TAG = BannerPagerView.class.getSimpleName();
     private final LayoutParams mIndicatorParams =
             new LayoutParams(MATCH_PARENT,WRAP_CONTENT);
-//    private static final int DEFAULT_BOTTOM_BACKGROUND = Color.TRANSPARENT;
     private static final int INIT_POSITION = 0;
     private static final long DEFAULT_DELAY_TIME = 8 * 10_00;
 
@@ -96,12 +95,9 @@ public class BannerPagerView extends FrameLayout {
      * Banner list
      */
     private final List<BannerItem> mBannerList = new ArrayList<>();
-//    private PageIndicator mBottomIndicator;
     private BannerIndicator mBannerIndicator;
     private ViewGroup mIndicatorView;
-//    private PageIndicator mPageIndicator;
     private LoopViewPager mViewPage;
-//    private TextView mTitleTextView;
     private BannerPageAdapter mPageAdapter;
 
     private long mIntervalTime = DEFAULT_DELAY_TIME;

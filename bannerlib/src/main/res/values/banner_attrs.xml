@@ -22,10 +22,8 @@
         <attr name="indicatorStyle">
             <flag name="None " value="0"/>
             <flag name="circle_indicator" value="1"/>
-            <flag name="number_indicator" value="2"/>
-            <flag name="title_indicator" value="3"/>
-            <flag name="circle_title_indicator" value="4"/>
-            <flag name="number_title_indicator" value="5"/>
+            <flag name="title_indicator" value="2"/>
+            <flag name="circle_title_indicator" value="3"/>
         </attr>
         <attr name="enableAutoPlayer" format="boolean|reference"/>
         <attr name="indicatorBackground" format="reference"/>

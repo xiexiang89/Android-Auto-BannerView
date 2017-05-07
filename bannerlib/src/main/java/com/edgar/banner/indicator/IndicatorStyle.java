@@ -27,19 +27,11 @@ public class IndicatorStyle {
      */
     public static final int CIRCLE_INDICATOR = 1;
     /**
-     * 数字指示器
-     */
-    public static final int NUMBER_INDICATOR = 2;
-    /**
      * 标题
      */
-    public static final int TITLE_INDICATOR = 3;
+    public static final int TITLE_INDICATOR = 2;
     /**
      * 圆点加标题
      */
-    public static final int CIRCLE_TITLE_INDICATOR = 4;
-    /**
-     * 数字加标题
-     */
-    public static final int NUMBER_TITLE_INDICATOR = 5;
+    public static final int CIRCLE_TITLE_INDICATOR = 3;
 }
