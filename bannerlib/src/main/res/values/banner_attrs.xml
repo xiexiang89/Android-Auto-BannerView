@@ -19,20 +19,23 @@
     <declare-styleable name="BannerPagerView">
         <!-- 加载自定义布局 -->
         <attr name="bannerIndicatorLayout" format="reference"/>
-        <!--<attr name="bannerIndicatorSelectorRadius" format="dimension|reference"/>-->
-        <!--<attr name="bannerIndicatorNormalRadius" format="dimension|reference"/>-->
-        <!--<attr name="bannerIndicatorSelectorColor" format="dimension|color"/>-->
-        <!--<attr name="bannerIndicatorNormalColor" format="dimension|color"/>-->
-        <!--<attr name="bannerIndicatorStrokeWidth" format="dimension|reference"/>-->
-        <!--<attr name="bannerIndicatorStrokeColor" format="dimension|color"/>-->
+        <attr name="indicatorStyle">
+            <flag name="None " value="0"/>
+            <flag name="circle_indicator" value="1"/>
+            <flag name="number_indicator" value="2"/>
+            <flag name="title_indicator" value="3"/>
+            <flag name="circle_title_indicator" value="4"/>
+            <flag name="number_title_indicator" value="5"/>
+        </attr>
         <attr name="enableAutoPlayer" format="boolean|reference"/>
-        <!--<attr name="bannerBottomBackground" format="reference|color"/>-->
-        <!--<attr name="bannerTitleTextColor" format="reference|color"/>-->
-        <!--<attr name="bannerTitleTextSize" format="reference|dimension"/>-->
-        <attr name="bannerIndicatorGravity" format="enum">
-            <enum name="left" value="3"/>
-            <enum name="right" value="5"/>
-            <enum name="center" value="17"/>
+        <attr name="indicatorBackground" format="reference"/>
+        <attr name="pointPadding" format="reference|dimension"/>
+        <attr name="unSelectDrawable" format="reference"/>
+        <attr name="selectedDrawable" format="reference"/>
+        <attr name="indicatorGravity">
+            <flag name="left" value="0x03"/>
+            <flag name="right" value="0x05"/>
+            <flag name="center" value="0x11"/>
         </attr>
         <attr name="bannerAnimation" format="enum">
             <enum name="Accordion" value="1"/>
@@ -53,9 +56,5 @@
             <enum name="ZoomOutSlide" value="16"/>
             <enum name="ZoomOut" value="17"/>
         </attr>
-        <!--<attr name="indicatorPaddingLeft" format="dimension|reference"/>-->
-        <!--<attr name="indicatorPaddingRight" format="dimension|reference"/>-->
-        <!--<attr name="indicatorPaddingBottom" format="dimension|reference"/>-->
-        <!--<attr name="indicatorPaddingTop" format="dimension|reference"/>-->
     </declare-styleable>
 </resources>

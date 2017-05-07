@@ -16,22 +16,16 @@
 
 package com.edgar.banner.indicator;
 
-import android.content.Context;
+import android.graphics.drawable.Drawable;
 
 /**
- * Created by Edgar on 2017/5/1.
+ * Created by Edgar on 2017/5/7.
  */
-public final class IndicatorFactory {
+public interface IndicatorAttributeSet {
 
-    private IndicatorFactory(){}
+    void setIndicatorGravity(int indicatorGravity);
 
-    public static BannerIndicator createBannerIndicator(Context context,int indicatorStyle){
-        if (indicatorStyle == IndicatorStyle.CIRCLE_INDICATOR){
-            return new CircleIndicator(context);
-        } else if (indicatorStyle == IndicatorStyle.CIRCLE_TITLE_INDICATOR){
-            return new CircleTitleIndicator(context);
-        } else {
-            return null;
-        }
-    }
+    void setPointPadding(int pointPadding);
+
+    void setPointDrawable(Drawable unSelectDrawable,Drawable selectDrawable);
 }

@@ -46,7 +46,7 @@ public abstract class BaseBannerPageActivity extends AppCompatActivity {
                 "http://p3.music.126.net/KNdGeLq-J4XyK6PC1uDofQ==/18567452859744456.jpg"));
         addBannerItems(createBanner("28岁未成年",
                 "http://p3.music.126.net/UUNCMv9sMW6nAjepzayA4A==/18686200115549047.jpg"));
-        addBannerItems(createBanner("我们的航母编队！辽宁号航母战斗群靓照大曝光",
+        addBannerItems(createBanner("我们的航母编队！辽宁号航母战斗群靓照大曝光辽宁号航母战斗群靓照大曝光辽宁号航母战斗群靓照大曝光",
                 "http://n.sinaimg.cn/mil/transform/20161205/7HQf-fxyipxf7604307.jpg"));
         addBannerItems(createBanner("中国空军司令确认研制轰20 制造完毕明年将首飞",
                 "http://n.sinaimg.cn/mil/20161205/O97X-fxyiayr9093409.jpg"));

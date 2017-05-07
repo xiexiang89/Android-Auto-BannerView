@@ -17,6 +17,7 @@
 package com.edgar.banner.indicator;
 
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.edgar.banner.BannerItem;
 
@@ -37,4 +38,6 @@ public interface BannerIndicator{
      * @param newCount banner新的数量
      */
     void onBannerPageUpdate(int newCount);
+
+    ViewGroup getView();
 }

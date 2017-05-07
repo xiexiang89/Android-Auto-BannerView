@@ -21,25 +21,25 @@ package com.edgar.banner.indicator;
  */
 public class IndicatorStyle {
 
-    public static final int NONE = -1;
+    public static final int NONE = 0;
     /**
      * 圆点指示器
      */
-    public static final int CIRCLE_INDICATOR = 0;
+    public static final int CIRCLE_INDICATOR = 1;
     /**
      * 数字指示器
      */
-    public static final int NUMBER_INDICATOR = 1;
+    public static final int NUMBER_INDICATOR = 2;
     /**
      * 标题
      */
-    public static final int TITLE_INDICATOR = 2;
+    public static final int TITLE_INDICATOR = 3;
     /**
      * 圆点加标题
      */
-    public static final int CIRCLE_TITLE_INDICATOR = 3;
+    public static final int CIRCLE_TITLE_INDICATOR = 4;
     /**
      * 数字加标题
      */
-    public static final int NUMBER_TITLE_INDICATOR = 4;
+    public static final int NUMBER_TITLE_INDICATOR = 5;
 }

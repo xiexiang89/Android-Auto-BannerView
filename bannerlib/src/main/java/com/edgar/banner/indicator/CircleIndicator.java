@@ -21,9 +21,9 @@ import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -33,13 +33,14 @@ import com.edgar.banner.R;
 /**
  * Created by Edgar on 2017/5/1.
  * 不带标题的圆点指示器
+ * @hide
  */
-public class CircleIndicator extends LinearLayout implements BannerIndicator{
+public class CircleIndicator extends LinearLayout implements BannerIndicator,IndicatorAttributeSet{
     private Drawable mUnSelectedDrawable;
     private Drawable mSelectedDrawable;
-    private int mPointMargin;
+    private int mPointPadding;
     private int mCurItem;
-    private int mGravity;
+    private int mIndicatorGravity = IndicatorGravity.LEFT;
 
     public CircleIndicator(Context context) {
         this(context,null);
@@ -54,10 +55,6 @@ public class CircleIndicator extends LinearLayout implements BannerIndicator{
         Resources resources = getResources();
         setBackgroundDrawable(new ColorDrawable(resources.getColor(R.color.indicator_background)));
         setOrientation(HORIZONTAL);
-        setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
-        mUnSelectedDrawable = ContextCompat.getDrawable(context,R.drawable.def_circle_normal_background);
-        mSelectedDrawable = ContextCompat.getDrawable(context,R.drawable.def_circle_selected_background);
-        mPointMargin = context.getResources().getDimensionPixelOffset(R.dimen.point_margin);
         int horPadding = resources.getDimensionPixelOffset(R.dimen.indicator_hor_padding);
         int verPadding = resources.getDimensionPixelOffset(R.dimen.indicator_ver_padding);
         setPadding(horPadding,verPadding,horPadding,verPadding);
@@ -68,12 +65,6 @@ public class CircleIndicator extends LinearLayout implements BannerIndicator{
         getChildAt(mCurItem).setBackgroundDrawable(mUnSelectedDrawable);
         mCurItem = position;
         getChildAt(mCurItem).setBackgroundDrawable(mSelectedDrawable);
-    }
-
-    @Override
-    public void setGravity(int gravity) {
-        super.setGravity(gravity);
-        mGravity = gravity;
     }
 
     @Override
@@ -88,18 +79,45 @@ public class CircleIndicator extends LinearLayout implements BannerIndicator{
         }
     }
 
+    @Override
+    public void setPointPadding(int pointPadding){
+        mPointPadding = pointPadding;
+    }
+
+    @Override
+    public void setPointDrawable(Drawable unSelectDrawable, Drawable selectDrawable) {
+        mUnSelectedDrawable = unSelectDrawable;
+        mSelectedDrawable = selectDrawable;
+    }
+
+    public void setIndicatorGravity(int indicatorGravity){
+        mIndicatorGravity = indicatorGravity;
+        if (mIndicatorGravity == IndicatorGravity.LEFT){
+            setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
+        } else if (mIndicatorGravity == IndicatorGravity.RIGHT){
+            setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
+        } else {
+            setGravity(Gravity.CENTER);
+        }
+    }
+
     private ImageView createPointView(){
         Resources resources = getResources();
         ImageView pointView = new ImageView(getContext());
         pointView.setBackgroundDrawable(mUnSelectedDrawable);
         int pointSize = resources.getDimensionPixelSize(R.dimen.point_size);
         LayoutParams params = new LayoutParams(pointSize,pointSize);
-        if (mGravity == (Gravity.CENTER_VERTICAL|Gravity.LEFT)){
-            params.rightMargin = mPointMargin;
+        if (mIndicatorGravity== IndicatorGravity.LEFT){
+            params.rightMargin = mPointPadding;
         } else {
-            params.leftMargin = mPointMargin;
+            params.leftMargin = mPointPadding;
         }
         pointView.setLayoutParams(params);
         return pointView;
+    }
+
+    @Override
+    public ViewGroup getView() {
+        return this;
     }
 }

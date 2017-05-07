@@ -17,20 +17,10 @@
 package com.edgar.banner.indicator;
 
 /**
- * indicator位置
+ * Created by Edgar on 2017/5/6.
  */
 public class IndicatorGravity {
-
-    /**
-     * 左
-     */
-    public static final int LEFT = 1;
-    /**
-     * 居中
-     */
-    public static final int CENTER = 2;
-    /**
-     * 右
-     */
-    public static final int RIGHT = 3;
+    public static final int LEFT = 0x03;
+    public static final int CENTER = 0x11;
+    public static final int RIGHT = 0x05;
 }

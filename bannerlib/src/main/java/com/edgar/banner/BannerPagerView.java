@@ -20,12 +20,12 @@ package com.edgar.banner;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -41,12 +41,12 @@ import android.view.ViewParent;
 import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
 import android.widget.Scroller;
-import android.widget.TextView;
 
-//import com.edgar.banner.indicator.CirclePageIndicator;
 import com.edgar.banner.indicator.BannerIndicator;
-import com.edgar.banner.indicator.CircleIndicator;
-import com.edgar.banner.indicator.PageIndicator;
+import com.edgar.banner.indicator.IndicatorAttributeSet;
+import com.edgar.banner.indicator.IndicatorFactory;
+import com.edgar.banner.indicator.IndicatorGravity;
+import com.edgar.banner.indicator.IndicatorStyle;
 import com.edgar.transformers.PageTransformerFactory;
 import com.edgar.transformers.TransformerType;
 
@@ -70,6 +70,8 @@ public class BannerPagerView extends FrameLayout {
     }
 
     private static final String TAG = BannerPagerView.class.getSimpleName();
+    private final LayoutParams mIndicatorParams =
+            new LayoutParams(MATCH_PARENT,WRAP_CONTENT);
 //    private static final int DEFAULT_BOTTOM_BACKGROUND = Color.TRANSPARENT;
     private static final int INIT_POSITION = 0;
     private static final long DEFAULT_DELAY_TIME = 8 * 10_00;
@@ -99,7 +101,7 @@ public class BannerPagerView extends FrameLayout {
     private ViewGroup mIndicatorView;
 //    private PageIndicator mPageIndicator;
     private LoopViewPager mViewPage;
-    private TextView mTitleTextView;
+//    private TextView mTitleTextView;
     private BannerPageAdapter mPageAdapter;
 
     private long mIntervalTime = DEFAULT_DELAY_TIME;
@@ -113,6 +115,13 @@ public class BannerPagerView extends FrameLayout {
     private Scroller mBannerScroller;
     private Field mScrollerField;
     private List<ViewPager.OnPageChangeListener> mOnPageChangeListeners;
+
+    private Drawable mIndicatorBackground;
+    private Drawable mUnSelectedDrawable;
+    private Drawable mSelectedDrawable;
+    private int mIndicatorStyle = IndicatorStyle.CIRCLE_INDICATOR;
+    private int mIndicatorGravity = IndicatorGravity.CENTER;
+    private int mPointPadding;
 
     private OnBannerClickListener mOnBannerClickListener;
     private final View.OnClickListener mBannerClickListener = new OnClickListener() {
@@ -165,57 +174,63 @@ public class BannerPagerView extends FrameLayout {
 
     private void init(AttributeSet attrs, int defStyle) {
         Context context = getContext();
-        Resources resources = getResources();
+        Resources resource = context.getResources();
         LayoutInflater.from(getContext()).inflate(R.layout.banner_layout, this, true);
-//        mBottomIndicator = (CirclePageIndicator) findViewById(R.id.indicator_view);
         mViewPage = (LoopViewPager) findViewById(R.id.carouse_viewpager);
-        mTitleTextView = (TextView) findViewById(R.id.banner_title);
         setBannerScroller(new BannerScroller(getContext()));
         mViewPage.setOverScrollMode(View.OVER_SCROLL_NEVER);
         mViewPage.setOnPageChangeListener(mCarousePageListener);
-//        mBottomIndicator.setOnPageChangeListener(mCarousePageListener);
         mBannerPageAdapter = new DefaultBannerPageViewAdapter();
-
-        final float defaultSelectRadius = resources.getDimension(R.dimen.default_circle_selector_radius);
-        final float defaultNormalRadius = resources.getDimension(R.dimen.default_circle_normal_radius);
-        final int defaultPageColor = resources.getColor(R.color.default_circle_indicator_page_color);
-        final int defaultFillColor = resources.getColor(R.color.default_circle_indicator_fill_color);
-        final int defaultStrokeColor = resources.getColor(R.color.default_circle_indicator_stroke_color);
-        final float defaultStrokeWidth = resources.getDimension(R.dimen.default_circle_indicator_stroke_width);
+        mIndicatorParams.gravity = Gravity.BOTTOM;
+        mPointPadding = resource.getDimensionPixelOffset(R.dimen.point_margin);
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BannerPagerView, defStyle, 0);
-//        float indicatorSelectorRadius = a.getDimension(R.styleable.BannerPagerView_bannerIndicatorSelectorRadius,
-//                defaultSelectRadius);
-//        float indicatorNormalRadius = a.getDimension(R.styleable.BannerPagerView_bannerIndicatorNormalRadius,
-//                defaultNormalRadius);
-//        int indicatorSelectorColor = a.getColor(R.styleable.BannerPagerView_bannerIndicatorSelectorColor, defaultFillColor);
-//        int indicatorNormalColor = a.getColor(R.styleable.BannerPagerView_bannerIndicatorNormalColor, defaultPageColor);
-//        int strokeColor = a.getColor(R.styleable.BannerPagerView_bannerIndicatorStrokeColor, defaultStrokeColor);
-//        float strokeWidth = a.getDimension(R.styleable.BannerPagerView_bannerIndicatorStrokeWidth, defaultStrokeWidth);
-//        int indicatorPaddingLeft = a.getDimensionPixelSize(R.styleable.BannerPagerView_indicatorPaddingLeft, 0);
-//        int indicatorPaddingRight = a.getDimensionPixelSize(R.styleable.BannerPagerView_indicatorPaddingRight, 0);
-//        int indicatorPaddingTop = a.getDimensionPixelSize(R.styleable.BannerPagerView_indicatorPaddingTop, 0);
-//        int indicatorPaddingBottom = a.getDimensionPixelSize(R.styleable.BannerPagerView_indicatorPaddingBottom, 0);
-        int transformerType = a.getInt(R.styleable.BannerPagerView_bannerAnimation, 0);
-        boolean enableAutoPlay = a.getBoolean(R.styleable.BannerPagerView_enableAutoPlayer, false);
+        int N = a.getIndexCount();
+        for (int i = 0; i < N; i++) {
+            int attr = a.getIndex(i);
+            if (attr == R.styleable.BannerPagerView_bannerAnimation){
+                int transformerType = a.getInt(attr,0);
+                setBannerPageTransformer(true, TransformerType.convert(transformerType));
+            } else if (attr == R.styleable.BannerPagerView_enableAutoPlayer){
+                setEnableAutoPlay(a.getBoolean(attr,false));
+            } else if (attr == R.styleable.BannerPagerView_indicatorStyle){
+                mIndicatorStyle = a.getInt(attr, IndicatorStyle.CIRCLE_INDICATOR);
+            } else if (attr == R.styleable.BannerPagerView_bannerIndicatorLayout){
+                int resId = a.getResourceId(attr,0);
+                if (resId != 0){
+                    ViewGroup indicatorView = (ViewGroup) LayoutInflater.from(context).inflate(resId,this,false);
+                    if (!(indicatorView instanceof BannerIndicator)){
+                        throw new IllegalArgumentException("Your indicator must implements BannerIndicator.");
+                    }
+                    mIndicatorView = indicatorView;
+                    mBannerIndicator = (BannerIndicator) indicatorView;
+                    addView(mIndicatorView,mIndicatorParams);
+                }
+            } else if (attr == R.styleable.BannerPagerView_unSelectDrawable){
+                mUnSelectedDrawable = a.getDrawable(attr);
+            } else if (attr == R.styleable.BannerPagerView_selectedDrawable){
+                mSelectedDrawable = a.getDrawable(attr);
+            } else if (attr == R.styleable.BannerPagerView_indicatorGravity){
+                mIndicatorGravity = a.getInt(attr, Gravity.CENTER);
+            } else if (attr == R.styleable.BannerPagerView_pointPadding){
+                mPointPadding = a.getDimensionPixelOffset(attr,mPointPadding);
+            } else if (attr == R.styleable.BannerPagerView_indicatorBackground){
+                mIndicatorBackground = a.getDrawable(attr);
+                if (mIndicatorBackground == null){
+                    mIndicatorBackground = new ColorDrawable(resource.getColor(R.color.indicator_background));
+                }
+            }
+        }
 
-//        mBottomIndicator.setSelectedRadius(indicatorSelectorRadius);
-//        mBottomIndicator.setNormalRadius(indicatorNormalRadius);
-//        mBottomIndicator.setFillColor(indicatorSelectorColor);
-//        mBottomIndicator.setPageColor(indicatorNormalColor);
-//        mBottomIndicator.setStrokeColor(strokeColor);
-//        mBottomIndicator.setStrokeWidth(strokeWidth);
-//        mBottomIndicator.setPadding(indicatorPaddingLeft, indicatorPaddingTop, indicatorPaddingRight,
-//                indicatorPaddingBottom);
-        CircleIndicator circleIndicator = new CircleIndicator(context);
-        FrameLayout.LayoutParams params = new LayoutParams(MATCH_PARENT,WRAP_CONTENT);
-        params.gravity = Gravity.BOTTOM;
-        circleIndicator.setLayoutParams(params);
-        addView(circleIndicator);
-        mBannerIndicator = circleIndicator;
-        mIndicatorView = circleIndicator;
-        setBannerPageTransformer(true, TransformerType.convert(transformerType));
-        setEnableAutoPlay(enableAutoPlay);
+        if (mUnSelectedDrawable == null){
+            mUnSelectedDrawable = ContextCompat.getDrawable(context,R.drawable.def_circle_normal_background);
+        }
+        if (mSelectedDrawable == null){
+            mSelectedDrawable = ContextCompat.getDrawable(context,R.drawable.def_circle_selected_background);
+        }
+        if (mBannerIndicator == null){
+            setIndicatorStyle(mIndicatorStyle);
+        }
 
         a.recycle();
     }
@@ -268,6 +283,53 @@ public class BannerPagerView extends FrameLayout {
                     listener.onPageScrollStateChanged(state);
                 }
             }
+        }
+    }
+
+    /**
+     * 设置自定义indicator,默认使用内部的LayoutParams
+     * 如果想使用自定义LayoutParams,请调用{@link BannerPagerView#setCustomIndicator(BannerIndicator, LayoutParams)}
+     * @param indicator see {@link BannerIndicator}
+     */
+    public void setCustomIndicator(BannerIndicator indicator){
+        setCustomIndicator(indicator,mIndicatorParams);
+    }
+
+    /**
+     * 设置自定义indicator,如果有特殊的样式,可以使用这个方法
+     * xml方式请使用 bannerIndicatorLayout 属性
+     * @param indicator see {@link BannerIndicator}
+     * @param params Indicator params
+     */
+    public void setCustomIndicator(BannerIndicator indicator,LayoutParams params){
+        if (indicator == null) return;
+        if (mBannerIndicator != indicator){
+            removeView(mIndicatorView);
+            mBannerIndicator = indicator;
+            mIndicatorView = indicator.getView();
+            addView(mIndicatorView,params);
+        }
+    }
+
+    /**
+     * 设置指示条的位置
+     * @param indicatorStyle see {@link IndicatorGravity}
+     */
+    public void setIndicatorStyle(int indicatorStyle){
+        mBannerIndicator = IndicatorFactory.createBannerIndicator(getContext(),indicatorStyle);
+        if (mBannerIndicator != null){
+            mIndicatorView = mBannerIndicator.getView();
+            addView(mIndicatorView,mIndicatorParams);
+            applyIndicatorAttribute();
+        }
+    }
+
+    private void applyIndicatorAttribute(){
+        if (mIndicatorView instanceof IndicatorAttributeSet){
+            IndicatorAttributeSet indicatorAttributeSet = (IndicatorAttributeSet) mIndicatorView;
+            indicatorAttributeSet.setIndicatorGravity(mIndicatorGravity);
+            indicatorAttributeSet.setPointDrawable(mUnSelectedDrawable,mSelectedDrawable);
+            indicatorAttributeSet.setPointPadding(mPointPadding);
         }
     }
 
@@ -423,6 +485,7 @@ public class BannerPagerView extends FrameLayout {
 //            mBottomIndicator.setViewPager(mViewPage);
             //底部指示条需要以真实数据size为准
             mBannerIndicator.onBannerPageUpdate(originCount);
+            mBannerIndicator.onBannerSelected(mBannerList.get(INIT_POSITION),INIT_POSITION);
             mViewPage.setCurrentItem(INIT_POSITION);
             startAutoPlay();
         }
