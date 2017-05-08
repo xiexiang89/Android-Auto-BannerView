@@ -20,7 +20,7 @@ import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.view.ViewGroup;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -54,10 +54,20 @@ public class TitleIndicator extends LinearLayout implements BannerIndicator {
     }
 
     @Override
+    public void onBannerScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onBannerScrollStateChanged(int state) {
+
+    }
+
+    @Override
     public void onBannerPageUpdate(int newCount) {}
 
     @Override
-    public ViewGroup getView() {
+    public View getView() {
         return this;
     }
 }

@@ -16,6 +16,8 @@
 
 package com.edgar.banner.indicator;
 
+import android.support.v4.view.ViewPager;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.edgar.banner.BannerItem;
@@ -34,6 +36,22 @@ public interface BannerIndicator{
     void onBannerSelected(BannerItem bannerItem,int position);
 
     /**
+     * Banner page scrolled.
+     * @param position banner item
+     * @param positionOffset position offset
+     * @param positionOffsetPixels positionOffsetPixels
+     */
+    void onBannerScrolled(int position, float positionOffset, int positionOffsetPixels);
+
+    /**
+     * @param state The new scroll state.
+     * @see ViewPager#SCROLL_STATE_IDLE
+     * @see ViewPager#SCROLL_STATE_DRAGGING
+     * @see ViewPager#SCROLL_STATE_SETTLING
+     */
+    void onBannerScrollStateChanged(int state);
+
+    /**
      * Banner 更新,需要更新indicator
      * @param pageCount banner page count
      */
@@ -42,5 +60,5 @@ public interface BannerIndicator{
     /**
      * 返回indicator view
      */
-    ViewGroup getView();
+    View getView();
 }

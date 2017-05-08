@@ -21,6 +21,9 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.edgar.banner.BannerItem;
 import com.edgar.banner.BannerPageViewAdapter;
@@ -30,8 +33,10 @@ import com.edgar.banner.ImageLoader;
 import java.util.ArrayList;
 import java.util.List;
 
+import banner.edgar.com.banner.LinePageIndicator;
 import banner.edgar.com.banner.R;
 import banner.edgar.com.banner.ToastUtils;
+import banner.edgar.com.banner.UnderlinePageIndicator;
 
 /**
  * Created by Edgar on 2016/12/3.
@@ -84,8 +89,6 @@ public abstract class BaseBannerPageActivity extends AppCompatActivity {
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         int bannerHeight = displayMetrics.heightPixels / 3;
         mBannerPagerView.getLayoutParams().height = bannerHeight;
-//        mBannerPagerView.setBannerTitleView(new CustomBannerTitleView());
-        mBannerPagerView.setBannerPageInitPosition(1);
         mBannerPagerView.setBanner(BANNER_ITEMS);
     }
 

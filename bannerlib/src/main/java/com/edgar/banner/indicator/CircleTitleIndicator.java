@@ -18,13 +18,11 @@ package com.edgar.banner.indicator;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -58,7 +56,6 @@ public class CircleTitleIndicator extends RelativeLayout implements BannerIndica
     public CircleTitleIndicator(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         Resources resources = getResources();
-        setBackgroundDrawable(new ColorDrawable(resources.getColor(R.color.indicator_background)));
         inflate(context,R.layout.circle_title_indicator,this);
         mTitle = (TextView) findViewById(R.id.title);
         mIndicatorView = (LinearLayout) findViewById(R.id.indicator_view);
@@ -82,6 +79,14 @@ public class CircleTitleIndicator extends RelativeLayout implements BannerIndica
     }
 
     @Override
+    public void onBannerScrolled(int position, float positionOffset, int positionOffsetPixels) {
+    }
+
+    @Override
+    public void onBannerScrollStateChanged(int state) {
+    }
+
+    @Override
     public void onBannerPageUpdate(int newCount) {
         mIndicatorView.removeAllViews();
         if (newCount > 0){
@@ -94,7 +99,7 @@ public class CircleTitleIndicator extends RelativeLayout implements BannerIndica
     }
 
     @Override
-    public ViewGroup getView() {
+    public View getView() {
         return this;
     }
 

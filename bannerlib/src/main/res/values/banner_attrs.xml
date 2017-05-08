@@ -18,7 +18,7 @@
 <resources>
     <declare-styleable name="BannerPagerView">
         <!-- 加载自定义布局 -->
-        <attr name="bannerIndicatorLayout" format="reference"/>
+        <attr name="indicatorLayout" format="reference"/>
         <attr name="indicatorStyle">
             <flag name="none" value="0"/>
             <flag name="circle_indicator" value="1"/>
@@ -26,7 +26,7 @@
             <flag name="circle_title_indicator" value="3"/>
         </attr>
         <attr name="enableAutoPlayer" format="boolean|reference"/>
-        <attr name="indicatorBackground" format="reference"/>
+        <attr name="indicatorBackground" format="reference|color"/>
         <attr name="pointPadding" format="reference|dimension"/>
         <attr name="unSelectDrawable" format="reference"/>
         <attr name="selectedDrawable" format="reference"/>

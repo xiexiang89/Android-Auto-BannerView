@@ -18,6 +18,8 @@
         <activity android:name=".activitys.FrescoBannerActivity"/>
         <activity android:name=".activitys.PicassoBannerActivity"/>
         <activity android:name=".activitys.BannerTransformersActivity"/>
+        <activity android:name=".activitys.CustomIndicatorActivity"/>
+        <activity android:name=".activitys.CustomIndicatorLayoutActivity"/>
     </application>
 <uses-permission android:name="android.permission.INTERNET"/>
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>

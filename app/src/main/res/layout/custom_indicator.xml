@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2016 The Edgar
+  ~ Copyright (C) 2017 The Edgar
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,12 +15,7 @@
   ~ limitations under the License.
   -->
 
-<resources>
-    <array name="banner_demo">
-        <item>FrescoBanner</item>
-        <item>PicassoBanner</item>
-        <item>BannerTransformers</item>
-        <item>CustomIndicator</item>
-        <item>CustomIndicatorLayout</item>
-    </array>
-</resources>
+<banner.edgar.com.banner.UnderlinePageIndicator xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="@dimen/underline_indicator_height"
+    android:layout_gravity="bottom" />

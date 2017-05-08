@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2016 The Edgar
+  ~ Copyright (C) 2017 The Edgar
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -25,9 +25,9 @@
         android:layout_width="match_parent"
         android:layout_height="150dp"
         app:enableAutoPlayer="true"
-        app:indicatorStyle="circle_indicator"
         app:indicatorGravity="center"
-        app:indicatorBackground="#74b9b9b9"/>
+        app:indicatorBackground="#74b9b9b9"
+        app:indicatorLayout="@layout/custom_indicator"/>
     <Button
         android:id="@+id/banner_enable_auto_play"
         android:layout_width="wrap_content"

@@ -22,6 +22,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -96,7 +97,7 @@ public class BannerPagerView extends FrameLayout {
      */
     private final List<BannerItem> mBannerList = new ArrayList<>();
     private BannerIndicator mBannerIndicator;
-    private ViewGroup mIndicatorView;
+    private View mIndicatorView;
     private LoopViewPager mViewPage;
     private BannerPageAdapter mPageAdapter;
 
@@ -192,16 +193,16 @@ public class BannerPagerView extends FrameLayout {
                 setEnableAutoPlay(a.getBoolean(attr,false));
             } else if (attr == R.styleable.BannerPagerView_indicatorStyle){
                 mIndicatorStyle = a.getInt(attr, IndicatorStyle.CIRCLE_INDICATOR);
-            } else if (attr == R.styleable.BannerPagerView_bannerIndicatorLayout){
+            } else if (attr == R.styleable.BannerPagerView_indicatorLayout){
                 int resId = a.getResourceId(attr,0);
                 if (resId != 0){
-                    ViewGroup indicatorView = (ViewGroup) LayoutInflater.from(context).inflate(resId,this,false);
+                    View indicatorView = LayoutInflater.from(context).inflate(resId,this,false);
                     if (!(indicatorView instanceof BannerIndicator)){
                         throw new IllegalArgumentException("Your indicator must implements BannerIndicator.");
                     }
                     mIndicatorView = indicatorView;
                     mBannerIndicator = (BannerIndicator) indicatorView;
-                    addView(mIndicatorView,mIndicatorParams);
+                    addView(mIndicatorView);
                 }
             } else if (attr == R.styleable.BannerPagerView_unSelectDrawable){
                 mUnSelectedDrawable = a.getDrawable(attr);
@@ -213,9 +214,6 @@ public class BannerPagerView extends FrameLayout {
                 mPointPadding = a.getDimensionPixelOffset(attr,mPointPadding);
             } else if (attr == R.styleable.BannerPagerView_indicatorBackground){
                 mIndicatorBackground = a.getDrawable(attr);
-                if (mIndicatorBackground == null){
-                    mIndicatorBackground = new ColorDrawable(resource.getColor(R.color.indicator_background));
-                }
             }
         }
 
@@ -224,6 +222,9 @@ public class BannerPagerView extends FrameLayout {
         }
         if (mSelectedDrawable == null){
             mSelectedDrawable = ContextCompat.getDrawable(context,R.drawable.def_circle_selected_background);
+        }
+        if (mIndicatorBackground == null){
+            mIndicatorBackground = new ColorDrawable(resource.getColor(R.color.indicator_background));
         }
         if (mBannerIndicator == null){
             setIndicatorStyle(mIndicatorStyle);
@@ -251,6 +252,9 @@ public class BannerPagerView extends FrameLayout {
     }
 
     private void dispatchOnPageScrolled(int position, float offset, int offsetPixels) {
+        if (mBannerIndicator != null){
+            mBannerIndicator.onBannerScrolled(position,offset,offsetPixels);
+        }
         if (mOnPageChangeListeners != null) {
             for (int i = 0, z = mOnPageChangeListeners.size(); i < z; i++) {
                 ViewPager.OnPageChangeListener listener = mOnPageChangeListeners.get(i);
@@ -262,6 +266,9 @@ public class BannerPagerView extends FrameLayout {
     }
 
     private void dispatchOnPageSelected(int position) {
+        if (mBannerIndicator != null){
+            mBannerIndicator.onBannerSelected(mBannerList.get(position),position);
+        }
         if (mOnPageChangeListeners != null) {
             for (int i = 0, z = mOnPageChangeListeners.size(); i < z; i++) {
                 ViewPager.OnPageChangeListener listener = mOnPageChangeListeners.get(i);
@@ -273,6 +280,9 @@ public class BannerPagerView extends FrameLayout {
     }
 
     private void dispatchOnScrollStateChanged(int state) {
+        if (mBannerIndicator != null){
+            mBannerIndicator.onBannerScrollStateChanged(state);
+        }
         if (mOnPageChangeListeners != null) {
             for (int i = 0, z = mOnPageChangeListeners.size(); i < z; i++) {
                 ViewPager.OnPageChangeListener listener = mOnPageChangeListeners.get(i);
@@ -342,6 +352,11 @@ public class BannerPagerView extends FrameLayout {
         if (mBannerIndicator != null){
             mIndicatorView = mBannerIndicator.getView();
             addView(mIndicatorView,mIndicatorParams);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                mIndicatorView.setBackground(mIndicatorBackground);
+            } else {
+                mIndicatorView.setBackgroundDrawable(mIndicatorBackground);
+            }
             applyIndicatorAttribute();
         }
     }
@@ -681,9 +696,6 @@ public class BannerPagerView extends FrameLayout {
         public void onPageSelected(int position) {
             if (checkIndexOutOfBounds(position)){
                 position = realPosition(position);
-                if (mBannerIndicator != null){
-                    mBannerIndicator.onBannerSelected(mBannerList.get(position),position);
-                }
                 dispatchOnPageSelected(position);
             }
         }

@@ -18,11 +18,11 @@ package com.edgar.banner.indicator;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -53,7 +53,6 @@ public class CircleIndicator extends LinearLayout implements BannerIndicator,Ind
     public CircleIndicator(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         Resources resources = getResources();
-        setBackgroundDrawable(new ColorDrawable(resources.getColor(R.color.indicator_background)));
         setOrientation(HORIZONTAL);
         int horPadding = resources.getDimensionPixelOffset(R.dimen.indicator_hor_padding);
         int verPadding = resources.getDimensionPixelOffset(R.dimen.indicator_ver_padding);
@@ -65,6 +64,16 @@ public class CircleIndicator extends LinearLayout implements BannerIndicator,Ind
         getChildAt(mCurItem).setBackgroundDrawable(mUnSelectedDrawable);
         mCurItem = position;
         getChildAt(mCurItem).setBackgroundDrawable(mSelectedDrawable);
+    }
+
+    @Override
+    public void onBannerScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onBannerScrollStateChanged(int state) {
+
     }
 
     @Override
@@ -117,7 +126,7 @@ public class CircleIndicator extends LinearLayout implements BannerIndicator,Ind
     }
 
     @Override
-    public ViewGroup getView() {
+    public View getView() {
         return this;
     }
 }
