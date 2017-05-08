@@ -16,13 +16,13 @@
 
 package com.edgar.banner.indicator;
 
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.edgar.banner.BannerItem;
 
 /**
  * Created by Edgar on 2017/4/30.
+ * 这个接口,可以用Activity实现,也可以通过自定义View实现
  */
 public interface BannerIndicator{
 
@@ -35,9 +35,12 @@ public interface BannerIndicator{
 
     /**
      * Banner 更新,需要更新indicator
-     * @param newCount banner新的数量
+     * @param pageCount banner page count
      */
-    void onBannerPageUpdate(int newCount);
+    void onBannerPageUpdate(int pageCount);
 
+    /**
+     * 返回indicator view
+     */
     ViewGroup getView();
 }

@@ -72,7 +72,7 @@ public class BannerPagerView extends FrameLayout {
     private static final String TAG = BannerPagerView.class.getSimpleName();
     private final LayoutParams mIndicatorParams =
             new LayoutParams(MATCH_PARENT,WRAP_CONTENT);
-    private static final int INIT_POSITION = 0;
+    private static final int DEFAULT_INIT_POSITION = 0;
     private static final long DEFAULT_DELAY_TIME = 8 * 10_00;
 
     private static final int AUTO_PLAY_DISABLE = 0x00000020;
@@ -103,6 +103,7 @@ public class BannerPagerView extends FrameLayout {
     private long mIntervalTime = DEFAULT_DELAY_TIME;
     //Banner flags
     private int mBannerFlags;
+    private int mBannerPageInitPosition = DEFAULT_INIT_POSITION;
     private boolean mTouchDown;
     private final BannerPageListener mCarousePageListener = new BannerPageListener();
 
@@ -280,6 +281,27 @@ public class BannerPagerView extends FrameLayout {
                 }
             }
         }
+    }
+
+    /**
+     * 设置Banner的item.
+     * @param item 选择item index
+     */
+    public void setCurrentItem(int item){
+        mViewPage.setCurrentItem(item);
+    }
+
+    /**
+     * 设置Banner的item
+     * @param item 选择item的index
+     * @param smoothScroll True to smoothly scroll to the new item, false to transition immediately
+     */
+    public void setCurrentItem(int item,boolean smoothScroll){
+        mViewPage.setCurrentItem(item,smoothScroll);
+    }
+
+    public void setBannerPageInitPosition(int pageInitPosition){
+        mBannerPageInitPosition = pageInitPosition;
     }
 
     /**
@@ -461,15 +483,14 @@ public class BannerPagerView extends FrameLayout {
             final int originCount = mBannerList.size();
             int bannerCount = originCount;
             mViewPage.setLoopEnable(true);
-//            View indicator = (View) mBottomIndicator;
-            mIndicatorView.setVisibility(VISIBLE);
+            showIndicator();
             //之所以判断这个,是因为ViewPager是预加载,但是需要循环滚动,
             //so,在原有的数据项增加2倍,保证在后面的item不会加载失败.
             if (bannerCount < MI_BANNER_COUNT) {
                 //banner 数量如果是1,那么就不让他循环.
                 //自动轮播也会停止.
                 if (bannerCount == 1) {
-                    mIndicatorView.setVisibility(GONE);
+                    hideIndicator();
                     mViewPage.setLoopEnable(false);
                 } else {
                     bannerCount = 2 * bannerCount;
@@ -478,13 +499,27 @@ public class BannerPagerView extends FrameLayout {
             mPageAdapter = new BannerPageAdapter();
             mPageAdapter.setBannerCount(bannerCount);
             mViewPage.setAdapter(mPageAdapter);
-//            mBottomIndicator.setViewPager(mViewPage);
-            //底部指示条需要以真实数据size为准
-            mBannerIndicator.onBannerPageUpdate(originCount);
-            mBannerIndicator.onBannerSelected(mBannerList.get(INIT_POSITION),INIT_POSITION);
-            mViewPage.setCurrentItem(INIT_POSITION);
+            initBannerPosition(originCount);
             startAutoPlay();
         }
+    }
+
+    private void initBannerPosition(int originCount){
+        if (mBannerIndicator != null){
+            mBannerIndicator.onBannerPageUpdate(originCount);
+            mBannerIndicator.onBannerSelected(mBannerList.get(mBannerPageInitPosition),mBannerPageInitPosition);
+        }
+        mViewPage.setCurrentItem(mBannerPageInitPosition);
+    }
+
+    public void showIndicator(){
+        if (mIndicatorView == null) return;
+        mIndicatorView.setVisibility(VISIBLE);
+    }
+
+    public void hideIndicator(){
+        if (mIndicatorView == null) return;
+        mIndicatorView.setVisibility(GONE);
     }
 
     private void clearAllData() {
@@ -640,8 +675,10 @@ public class BannerPagerView extends FrameLayout {
         @Override
         public void onPageSelected(int position) {
             if (checkIndexOutOfBounds(position)){
-                mBannerIndicator.onBannerSelected(mBannerList.get(position),position);
                 position = realPosition(position);
+                if (mBannerIndicator != null){
+                    mBannerIndicator.onBannerSelected(mBannerList.get(position),position);
+                }
                 dispatchOnPageSelected(position);
             }
         }

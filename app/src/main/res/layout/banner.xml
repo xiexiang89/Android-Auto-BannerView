@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="150dp"
         app:enableAutoPlayer="true"
-        app:indicatorStyle="circle_title_indicator"
+        app:indicatorStyle="none"
         app:indicatorGravity="right"/>
     <Button
         android:id="@+id/banner_enable_auto_play"
