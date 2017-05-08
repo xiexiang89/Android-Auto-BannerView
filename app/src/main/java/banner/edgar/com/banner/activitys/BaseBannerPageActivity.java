@@ -21,8 +21,6 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
-import android.view.View;
-import android.widget.Button;
 
 import com.edgar.banner.BannerItem;
 import com.edgar.banner.BannerPageViewAdapter;
@@ -87,6 +85,7 @@ public abstract class BaseBannerPageActivity extends AppCompatActivity {
         int bannerHeight = displayMetrics.heightPixels / 3;
         mBannerPagerView.getLayoutParams().height = bannerHeight;
 //        mBannerPagerView.setBannerTitleView(new CustomBannerTitleView());
+        mBannerPagerView.setBannerPageInitPosition(1);
         mBannerPagerView.setBanner(BANNER_ITEMS);
     }
 

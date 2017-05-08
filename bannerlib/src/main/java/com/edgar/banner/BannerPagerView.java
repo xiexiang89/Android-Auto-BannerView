@@ -300,6 +300,10 @@ public class BannerPagerView extends FrameLayout {
         mViewPage.setCurrentItem(item,smoothScroll);
     }
 
+    /**
+     * 设置的init position大于等于banner page size,则初始化为0
+     * @param pageInitPosition 初始化page index
+     */
     public void setBannerPageInitPosition(int pageInitPosition){
         mBannerPageInitPosition = pageInitPosition;
     }
@@ -505,11 +509,12 @@ public class BannerPagerView extends FrameLayout {
     }
 
     private void initBannerPosition(int originCount){
+        int initPosition = mBannerPageInitPosition > originCount - 1 ? DEFAULT_INIT_POSITION:mBannerPageInitPosition;
         if (mBannerIndicator != null){
             mBannerIndicator.onBannerPageUpdate(originCount);
-            mBannerIndicator.onBannerSelected(mBannerList.get(mBannerPageInitPosition),mBannerPageInitPosition);
+            mBannerIndicator.onBannerSelected(mBannerList.get(initPosition),initPosition);
         }
-        mViewPage.setCurrentItem(mBannerPageInitPosition);
+        mViewPage.setCurrentItem(initPosition);
     }
 
     public void showIndicator(){
