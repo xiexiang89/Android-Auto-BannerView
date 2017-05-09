@@ -451,30 +451,6 @@ public class BannerPagerView extends FrameLayout {
         setBannerScroller(scroller);
     }
 
-//    /**
-//     * <p>设置Banner title view,title view的位置取决与indicator view的位置.
-//     * 如果indicator是在left,title会添加到right;反之,则添加到left.
-//     * 如果你需要一个title,则必须设置bannerIndicatorGravity属性</p>
-//     *
-//     * @param bannerTitleView {@link BannerTitleView}
-//     */
-//    public void setBannerTitleView(BannerTitleView bannerTitleView) {
-//        mBannerTitleView = bannerTitleView;
-//        int layoutId = mBannerTitleView.getTitleLayoutId();
-//        View titleView = LayoutInflater.from(getContext()).inflate(layoutId, mBottomLayout, false);
-//        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) titleView.getLayoutParams();
-//        params.weight = 1;
-//        params.gravity = Gravity.CENTER_VERTICAL;
-//        bannerTitleView.onFinishInflater(titleView);
-//        if (mIndicatorGravity == Gravity.LEFT) {
-//            //indicator 如果是在left,则直接addView
-//            mBottomLayout.addView(titleView);
-//        } else if (mIndicatorGravity == Gravity.RIGHT) {
-//            //indicator 如果是在right,就addView第一个index
-//            mBottomLayout.addView(titleView, 0);
-//        }
-//    }
-
     public void setBannerPagerAdapter(BannerPageViewAdapter bannerPageAdapter) {
         if (bannerPageAdapter == null) return;
         mBannerPageAdapter = bannerPageAdapter;
@@ -582,13 +558,6 @@ public class BannerPagerView extends FrameLayout {
 
     private void setBannerFlags(int flags, int mark) {
         mBannerFlags = (mBannerFlags & ~mark) | (flags & mark);
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        //View离开窗体时,需要停止滚动
-        destroy();
     }
 
     /**
